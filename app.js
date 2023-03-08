@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const router = require('./src/routes/router');
+const logger = require('./src/utilities/logger');
 
 const app = express();
 app.use(express.urlencoded({extended:true}));
@@ -18,5 +19,5 @@ app.get('/' , (req,res) => {
 })
 
 app.listen( 8080 , () => {
-    console.log("Server is running on port 8080")
+    logger.info("Server is running on port 8080")
 })
