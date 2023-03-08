@@ -1,3 +1,4 @@
+const logger = require("../utilities/logger");
 
 function log(req, res, next) {
     let current_datetime = new Date();
@@ -19,7 +20,7 @@ function log(req, res, next) {
     const start = process.hrtime();
     const durationInMilliseconds = getActualRequestDurationInMilliseconds(start);
     let log = `[${formatted_date}] ${method}:${url} ${status} ${durationInMilliseconds.toLocaleString()} ms`;
-    console.log(log);
+    logger.info(log);
 
     next()
 };
