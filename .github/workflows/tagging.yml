@@ -1,0 +1,35 @@
+name: Add tag on dev branch
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  tagging:
+    name: tagging
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 
+      - 
+        name: Get semantic versioning
+        id: versioning
+        uses: paulhatch/semantic-version@v5.0.2
+        with:   
+          branch: dev
+          tag_prefix: "v"
+          major_pattern: "BREAKING CHANGE"
+          minor_pattern: "feat"
+          version_format: "${major}.${minor}.${patch}"
+      - 
+        name: Push tag
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          npm version v${{ steps.versioning.outputs.version }} --no-git-tag-version
+          git push --follow-tags
+
+      
