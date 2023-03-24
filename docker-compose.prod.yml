@@ -22,7 +22,7 @@ services:
       MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_PORT: ${MONGO_PORT}
       PORT: ${PORT}
-      MONGO_HOST: db-prod
+      MONGO_HOST: ${HOST}
       ENV: prod
     ports:
       - '${PORT}:${PORT}'
