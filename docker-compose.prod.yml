@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
 
-  db:
+  db-prod:
     image: mongo:6.0.4
     container_name: mongoDB
     restart: always
@@ -13,22 +13,25 @@ services:
       - "${MONGO_PORT}:27017"
     networks:
       - default
-    # volumes:
-    #   - mongo-db:/data/db
+    volumes:
+      - mongo-db-prod:/data/db
 
-  app-server:
+  app-server-prod:
     image:  ${DOCKER_HUB_USERNAME}/suigetsu-project:latest
     environment:
       MONGO_USER: ${MONGO_USER}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_PORT: ${MONGO_PORT}
-      MONGO_HOST: db
       PORT: ${PORT}
-      ENV: dev
+      MONGO_HOST: db-prod
+      ENV: prod
     ports:
       - '${PORT}:${PORT}'
     restart: always
     networks:
       - default
     depends_on:
-      - db
+      - db-prod
+
+volumes:
+  mongo-db-prod:
