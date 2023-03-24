@@ -1,6 +1,8 @@
 name: Add tag on dev branch
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
       - dev
 
@@ -12,11 +14,26 @@ jobs:
       - 
         name: Checkout
         uses: actions/checkout@v3
-      -
-        name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.1
         with:
+          fetch-depth: 0 
+          token: ${{ secrets.PAT }}
+      - 
+        name: Get semantic versioning
+        id: versioning
+        uses: paulhatch/semantic-version@v5.0.2
+        with:   
+          branch: dev
           tag_prefix: "v"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          major_pattern: "BREAKING CHANGE"
+          minor_pattern: "feat"
+          version_format: "${major}.${minor}.${patch}"
+      -
+        name: Update version in package.json and add tag to git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          npm version v${{ steps.versioning.outputs.version }}
+          git push --follow-tags 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
       
