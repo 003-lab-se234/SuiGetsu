@@ -25,7 +25,7 @@ services:
       MONGO_HOST: db
       ENV: dev
     ports:
-      - '${EXPOSE_PORT}:${EXPOSE_PORT}'
+      - '${PORT}:${PORT}'
     restart: always
     networks:
       - default
