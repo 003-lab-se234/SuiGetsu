@@ -13,8 +13,8 @@ services:
       - "${MONGO_PORT}:27017"
     networks:
       - default
-    # volumes:
-    #   - mongo-db:/data/db
+    volumes:
+      - mongo-db-dev:/data/db
 
   app-server:
     image:  ${DOCKER_HUB_USERNAME}/suigetsu-project:latest
@@ -32,3 +32,5 @@ services:
       - default
     depends_on:
       - db
+volumes:
+  mongo-db-dev:
