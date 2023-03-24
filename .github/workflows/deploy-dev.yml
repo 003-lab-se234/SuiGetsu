@@ -44,9 +44,9 @@ jobs:
       - 
         name: Prepare docker-compose run
         run: |
-              mkdir suigetsu-backend
+              mkdir suigetsu-project
               cp docker-compose.dev.yml suigetsu-project/docker-compose.dev.yml
-              cd suigetsu-backend
+              cd suigetsu-project
               docker-compose -H ${{ secrets.DOCKER_HOST_SERVER }} -f docker-compose.dev.yml down
               docker-compose -H ${{ secrets.DOCKER_HOST_SERVER }} -f docker-compose.dev.yml pull
               docker-compose -H ${{ secrets.DOCKER_HOST_SERVER }} -f docker-compose.dev.yml up -d
