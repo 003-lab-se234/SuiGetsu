@@ -15,7 +15,7 @@ authController.get('/signup', (req, res) => {
 })
 
 authController.get('/signout' , (req ,res) => {
-    // req.session.destroy(function (err) { res.redirect('/') });
+    req.session.destroy(function (err) { res.redirect('/') });
 })
 
 authController.post('/signin', async (req, res) => {
@@ -33,8 +33,8 @@ authController.post('/signin', async (req, res) => {
         const passwordValidation = await validation(password, userCheck.password);
 
         if (passwordValidation) {
-            // req.session.userId = newUser.id;
-            // console.log(req.session);
+            req.session.userId = userCheck.id;
+            console.log(req.session);
             return res.redirect('/');
         } else {
             console.log('password incorrect')
@@ -59,8 +59,8 @@ authController.post('/signup', async (req, res) => {
         const hashedPassword = await encode(password)
         const newUser = new User({ username, email, phone_number, password: hashedPassword })
         await newUser.save();
-        // req.session.userId = newUser.id;
-        // console.log(req.session);
+        req.session.userId = newUser.id;
+        console.log(req.session);
         return res.redirect('/');
     } catch (err) {
         logger.error(err);

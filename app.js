@@ -1,13 +1,19 @@
 const express = require('express');
-const { connect } = require("./src/config/db");
+const { connect, mongoStoreConnection, sessionOption } = require("./src/config/db");
 const config = require('./src/config/config');
 const path = require('path');
 const router = require('./src/routes/router');
 const logger = require('./src/utilities/logger');
 const { Item } = require('./src/models/Item');
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
 const app = express();
 connect();
+app.use(session({
+    ...sessionOption,
+    store: MongoStore.create(mongoStoreConnection),
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
