@@ -1,0 +1,18 @@
+h5 {
+    font-family: 'Alkatra', cursive;
+}
+h2 {
+    font-family: 'Josefin Sans', sans-serif;
+}
+h1 {
+    /* font-family: 'Fasthand', cursive; */
+    font-family: 'Alkatra', cursive;
+}
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+p , strong , b , em {
+    font-family: 'Poppins', sans-serif;
+}
+
