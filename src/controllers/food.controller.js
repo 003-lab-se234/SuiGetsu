@@ -4,6 +4,7 @@ const logger = require('../utilities/logger');
 const upload = require('../utilities/upload').single('image');
 const path = require('path');
 const deleter = require('../utilities/deleter');
+const { paginate } = require('../utilities/paginate');
 
 
 
@@ -11,32 +12,26 @@ const foodController = new express.Router();
 foodController.get('/', async (req, res) => {
     // console.log(req.query)
     let { category, page, title } = req.query;
+    let filter = {}
     if (!page) page = 1;
-    if (!title) title = '';
-    if (!category) category = 'any';
-
-    const filter = {
-        category,
-        title
-    }
+    if (category && category != "any") filter = { ...filter, category };
+    if (title) filter = { ...filter, title: { $regex: new RegExp(`${title}`), $options: 'i' } };
 
     let sort = { is_outofstock: 1, updatedAt: 1 }
+    // console.log(filter, sort)
 
-    console.log(filter, sort)
+    const foods = await Food.find(filter).sort(sort);
+    const paginateFood = paginate(foods, page, 6);
 
-    res.render('staffPages/foods.ejs')
+    res.render('staffPages/foods.ejs', { data: paginateFood, category, page, title })
 })
 
 foodController.get('/add', (req, res) => {
-    // add item input form
-    // res.send("<h1>This is staff add form</h1>");
     res.render('staffPages/foodForm.ejs')
 })
 
 foodController.post('/', async (req, res) => {
     // console.log(req.body)
-    // 
-    //Create
     try {
         upload(req, res, async (err) => {
             const { item_id, title, description, price, category, is_outofstock } = req.body;
@@ -89,7 +84,7 @@ foodController.post('/', async (req, res) => {
 
                     await deleter(path.join(__dirname, '../..', oldData.image_path));
 
-                    console.log({ old: oldData.image_path, new: newImage })
+                    // console.log({ old: oldData.image_path, new: newImage })
                     return res.redirect('/staff/food');
                     // return res.json( {image_path , ...oldData.id})
                 }
