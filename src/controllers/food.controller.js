@@ -26,8 +26,17 @@ foodController.get('/', async (req, res) => {
     res.render('staffPages/foods.ejs', { data: paginateFood, category, page, title })
 })
 
-foodController.get('/add', (req, res) => {
-    res.render('staffPages/foodForm.ejs')
+// foodController.get('/patch')
+
+foodController.get('/patch/:id?', async (req, res) => {
+
+    const paramId = req.params.id;
+
+    const foodDoc = await Food.findById(paramId);
+    console.log(foodDoc)
+
+
+    res.render('staffPages/foodForm.ejs', { foodDoc })
 })
 
 foodController.post('/', async (req, res) => {
@@ -103,9 +112,6 @@ foodController.post('/', async (req, res) => {
 
 })
 
-foodController.get('/:id', (req, res) => {
-    //edit page
-    res.send("<h1>This is staff food edit item</h1>");
-})
+
 
 module.exports = foodController;

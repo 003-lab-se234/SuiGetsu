@@ -6,24 +6,55 @@
 
 
     <form action="/staff/food/" method="post" enctype="multipart/form-data">
-        <!-- <input type="hidden" name="item_id" value="642147f172bf3ac77d555ccc" /> -->
-        <input type="hidden" name="item_id" value="" required />
+        <% if(foodDoc != null) {%>
+            <input type="hidden" name="item_id" value="<%= foodDoc._id %>" />
+        <% }else{ %> 
+            <input type="hidden" name="item_id" value="" required />
+        <%}%>
+        
         <h3>Title</h3>
-        <input type="text" name="title" placeholder="title" required /><br>
+        <% if(foodDoc != null) {%> 
+            <input type="text" name="title" placeholder="title" value="<%= foodDoc.title %>" required /><br>
+        <% }else {%> 
+            <input type="text" name="title" placeholder="title" required /><br>
+        <%}%>
+
         <h3>Description</h3>
-        <textarea name="description" placeholder="description"></textarea><br>
+        <% if(foodDoc != null) {%> 
+            <textarea name="description" placeholder="description"><%= foodDoc.description %></textarea><br>
+        <% }else {%> 
+            <textarea name="description" placeholder="description"></textarea><br>
+        <%}%>
+        
         <h3>Price</h3>
-        <input type="number" name="price" placeholder="1" min="0" required /><br>
+        <% if(foodDoc != null) {%> 
+            <input type="number" name="price" placeholder="1" min="0" required value="<%= foodDoc.price%>" /><br>
+        <% }else {%> 
+            <input type="number" name="price" placeholder="1" min="0" required /><br>
+        <%}%>
 
         <h3>Category</h3>
-        <select name="category" id="category">
-            <option value="main">Main</option>
-            <option value="side">Side</option>
-            <option value="drink">Drink</option>
-            <option value="appetizer">Appetizer</option>
-            <option value="dessert">Dessert</option>
-        </select><br>
-
+        <% if(foodDoc != null) {%> 
+            <select name="category" id="category">
+                <%
+                var options = [ "Main", "Side", "Drink", "Appetizer", "Dessert" ];
+                for ( var i = 0; i < options.length; i++ )
+                {
+                    var selected = ( foodDoc.category == options[i].toLowerCase() ) ? "selected" : "";
+                    %>
+                    <option value="<%= options[i].toLowerCase() %>" <%=selected %>><%=options[i] %></option><%
+                }
+                %>
+            </select>
+        <% }else {%> 
+            <select name="category" id="category">
+                <option value="main">Main</option>
+                <option value="side">Side</option>
+                <option value="drink">Drink</option>
+                <option value="appetizer">Appetizer</option>
+                <option value="dessert">Dessert</option>
+            </select><br>
+        <%}%>
 
         <div class="uploadOuter">
             <label for="uploadFile" class="btn btn-primary">Upload Image</label>
@@ -31,16 +62,35 @@
             <span class="dragBox">
                 Darg and Drop image here
                 <input type="file" value="" name="image" accept="image/*" onChange="dragNdrop(event)"
-                    ondragover="drag()" ondrop="drop()" id="uploadFile" required/>
+                    ondragover="drag()" ondrop="drop()" id="uploadFile"/>
             </span>
         </div>
-        <div id="preview"></div>
+        <div id="preview">
+            <% if(foodDoc != null) {%>
+                <img src="<%= foodDoc.image_path %>" width="200" height="200" />
+            <%}%>
+        </div>
 
         Out of stock
-        <select name="is_outofstock" id="is_outofstock" >
-            <option value="false">false</option>
-            <option value="true">true</option>
-        </select><br>
+        <% if(foodDoc != null) {%> 
+            <select name="is_outofstock" id="is_outofstock">
+                <%
+                var options = [ false, true];
+                for ( var i = 0; i < options.length; i++ )
+                {
+                    var selected = ( foodDoc.is_outofstock == options[i] ) ? "selected" : "";
+                    %>
+                    <option value="<%= options[i] %>" <%=selected %>><%=options[i] %></option><%
+                }
+                %>
+            </select>
+        <% }else {%> 
+            <select name="is_outofstock" id="is_outofstock" >
+                <option value="false">false</option>
+                <option value="true">true</option>
+            </select>
+        <%}%>
+        <br>
 
         <input type="submit">
     </form>

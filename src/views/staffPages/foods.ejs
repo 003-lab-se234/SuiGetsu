@@ -39,7 +39,7 @@
 <body>
 
 
-    <a href="/staff/food/add" class="float-right mt-3 rounded btn btn-success mr-lg-5 mr-2">add food</a>
+    <a href="/staff/food/patch" class="float-right mt-3 rounded btn btn-success mr-lg-5 mr-2">add food</a>
     <div class="container-lg container-fluid  mt-5 px-5">
 
         <h1 class="mb-3">Manage Foods</h1>
@@ -154,7 +154,7 @@
                                 <%= item.updatedAt.toISOString() %>
                             </td>
                             <td>
-                                <a><button class="btn btn-warning btn-lg ">edit</button></a>
+                                <a href="/staff/food/patch/<%= item.id %>"><button class="btn btn-warning btn-lg">edit</button></a>
                             </td>
                         </tr>
 
@@ -226,7 +226,7 @@
 
         const allATag = document.querySelectorAll('.nav-item');
         allATag.forEach( e => {
-            const selectedMenu = getQueryParams(currentUrl)['category'];
+            const selectedMenu = getQueryParams(currentUrl)['category'] || 'Any';
             if(e.innerHTML.toLowerCase() == selectedMenu.toLowerCase()){
                 e.classList.add('active');
             }
