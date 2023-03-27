@@ -154,7 +154,37 @@
                                 <%= item.updatedAt.toISOString() %>
                             </td>
                             <td>
-                                <a href="/staff/food/patch/<%= item.id %>"><button class="btn btn-warning btn-lg">edit</button></a>
+                                <div style="display: inline-block;">
+                                    <a href="/staff/food/patch/<%= item.id %>"><button type="button" class="btn btn-warning">Edit</button></a>
+                                </div>
+                                <div style="display: inline-block;">
+                                    <!-- Button trigger modal -->
+                                    <a>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                                            Delete
+                                        </button>
+                                    </a>
+                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Please confirm that</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <strong><%= item.title %></strong> is going to be deleted forever!
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <a href="/staff/food/delete/<%= item.id %>"><button type="button" class="btn btn-danger">Delete it!</button></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 

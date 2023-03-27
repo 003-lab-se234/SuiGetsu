@@ -5,8 +5,10 @@ module.exports = async function deleteFile(path) {
     logger.info(`Delete ${path}`);
 
     fs.unlink(path, (err) => {
-        logger.error(err);
-        // throw err;
+        if (err) {
+            logger.error(err);
+            throw err;
+        }
     });
 
 } 

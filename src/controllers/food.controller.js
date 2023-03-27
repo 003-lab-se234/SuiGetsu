@@ -6,8 +6,6 @@ const path = require('path');
 const deleter = require('../utilities/deleter');
 const { paginate } = require('../utilities/paginate');
 
-
-
 const foodController = new express.Router();
 foodController.get('/', async (req, res) => {
     // console.log(req.query)
@@ -19,24 +17,32 @@ foodController.get('/', async (req, res) => {
 
     let sort = { is_outofstock: 1, updatedAt: 1 }
     // console.log(filter, sort)
-
     const foods = await Food.find(filter).sort(sort);
     const paginateFood = paginate(foods, page, 6);
 
     res.render('staffPages/foods.ejs', { data: paginateFood, category, page, title })
 })
 
-// foodController.get('/patch')
 
 foodController.get('/patch/:id?', async (req, res) => {
-
     const paramId = req.params.id;
-
     const foodDoc = await Food.findById(paramId);
-    console.log(foodDoc)
-
-
     res.render('staffPages/foodForm.ejs', { foodDoc })
+})
+
+foodController.get('/:id' , async(req,res) => {
+    const paramId = req.params.id;
+    const foodDoc = await Food.findById(paramId);
+    res.json(foodDoc);
+})
+
+foodController.get('/delete/:id' , async (req,res) => {
+    const paramId = req.params.id;
+    const foodDoc = await Food.findById(paramId);
+    await deleter(path.join(__dirname, '../..', foodDoc.image_path));
+    
+    await Food.findByIdAndDelete(paramId);
+    res.redirect('/staff/food')
 })
 
 foodController.post('/', async (req, res) => {
@@ -97,19 +103,12 @@ foodController.post('/', async (req, res) => {
                     return res.redirect('/staff/food');
                     // return res.json( {image_path , ...oldData.id})
                 }
-
-
-
             }
         })
     } catch (err) {
         logger.error(err);
         return res.send(500)
     }
-
-
-
-
 })
 
 
