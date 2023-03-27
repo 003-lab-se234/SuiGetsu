@@ -14,7 +14,7 @@ app.use(express.json());
 app.set('views', path.join(__dirname, 'src', 'views'));
 app.set('view engine', 'ejs');
 
-app.use('/static', express.static(path.join(__dirname, "public")));
+app.use('/public', express.static(path.join(__dirname, "public")));
 app.use('/', router);
 
 app.get('/database', async (req, res) => {

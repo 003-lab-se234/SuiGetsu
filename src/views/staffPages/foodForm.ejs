@@ -1,0 +1,68 @@
+<head>
+    <link rel="stylesheet" href="/public/css/FoodForm.css">
+</head>
+
+<body>
+
+
+    <form action="/staff/food/" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="item_id" value="642147f172bf3ac77d555ccc" />
+        <!-- <input type="hidden" name="item_id" value="" /> -->
+        <h3>Title</h3>
+        <input type="text" name="title" placeholder="title" /><br>
+        <h3>Description</h3>
+        <textarea name="description" placeholder= "description"></textarea><br>
+        <h3>Price</h3>
+        <input type="number" name="price" placeholder="1" min="0" /><br>
+
+        <h3>Category</h3>
+        <select name="category" id="category">
+            <option value="main">Main</option>
+            <option value="side">Side</option>
+            <option value="drink">Drink</option>
+            <option value="appetizer">Appetizer</option>
+            <option value="dessert">Dessert</option>
+        </select><br>
+
+
+        <div class="uploadOuter">
+            <label for="uploadFile" class="btn btn-primary">Upload Image</label>
+            <strong>OR</strong>
+            <span class="dragBox">
+                Darg and Drop image here
+                <input type="file" value="" name="image" accept="image/*" onChange="dragNdrop(event)" ondragover="drag()"
+                    ondrop="drop()" id="uploadFile" />
+            </span>
+        </div>
+        <div id="preview"></div>
+
+        Out of stock
+        <select name="is_outofstock" id="is_outofstock">
+            <option value="false">false</option>
+            <option value="true">true</option>
+        </select><br>
+
+        <input type="submit">
+    </form>
+    <%- include('../partials/footer.ejs') %>
+        <script defer>
+            function dragNdrop(event) {
+                var fileName = URL.createObjectURL(event.target.files[0]);
+                setPreview(fileName)
+            }
+            function setPreview(uri) {
+                var preview = document.getElementById("preview");
+                var previewImg = document.createElement("img");
+                previewImg.setAttribute("src", uri);
+                previewImg.setAttribute("width", 200);
+                previewImg.setAttribute("height", 200);
+                preview.innerHTML = "";
+                preview.appendChild(previewImg);
+            }
+            function drag() {
+                document.getElementById('uploadFile').parentNode.className = 'draging dragBox';
+            }
+            function drop() {
+                document.getElementById('uploadFile').parentNode.className = 'dragBox';
+            }
+        </script>
