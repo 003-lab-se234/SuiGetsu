@@ -1,8 +1,11 @@
 const router = require('express').Router()
 const path = require('path');
 const { log } = require('../middleware');
+const staffRouter = require('./staff.router');
 
-router.get('/', log, (req, res) => {
+router.use(log);
+
+router.get('/', (req, res) => {
     res.status(200);
     res.setHeader("Content-type", "text/html");
     res.render('index.ejs', {
@@ -34,5 +37,6 @@ router.get('/menu', (req, res) => {
     res.send("To be continued");
 })
 
+router.use('/staff', staffRouter);
 
 module.exports = router;

@@ -1,0 +1,129 @@
+<head>
+    <link rel="stylesheet" href="/public/css/FoodForm.css">
+</head>
+
+<body>
+    <form action="/staff/food/" method="post" enctype="multipart/form-data">
+        <% if(foodDoc != null) {%>
+            <input type="hidden" name="item_id" value="<%= foodDoc._id %>" />
+        <% }else{ %> 
+            <input type="hidden" name="item_id" value="" required />
+        <%}%>
+        
+        <h3>Title</h3>
+        <% if(foodDoc != null) {%> 
+            <input type="text" name="title" placeholder="title" value="<%= foodDoc.title %>" required /><br>
+        <% }else {%> 
+            <input type="text" name="title" placeholder="title" required /><br>
+        <%}%>
+
+        <h3>Description</h3>
+        <% if(foodDoc != null) {%> 
+            <textarea name="description" placeholder="description"><%= foodDoc.description %></textarea><br>
+        <% }else {%> 
+            <textarea name="description" placeholder="description"></textarea><br>
+        <%}%>
+        
+        <h3>Price</h3>
+        <% if(foodDoc != null) {%> 
+            <input type="number" name="price" placeholder="1" min="0" required value="<%= foodDoc.price%>" /><br>
+        <% }else {%> 
+            <input type="number" name="price" placeholder="1" min="0" required /><br>
+        <%}%>
+
+        <h3>Category</h3>
+        <% if(foodDoc != null) {%> 
+            <select name="category" id="category">
+                <%
+                var options = [ "Main", "Side", "Drink", "Appetizer", "Dessert" ];
+                for ( var i = 0; i < options.length; i++ )
+                {
+                    var selected = ( foodDoc.category == options[i].toLowerCase() ) ? "selected" : "";
+                    %>
+                    <option value="<%= options[i].toLowerCase() %>" <%=selected %>><%=options[i] %></option><%
+                }
+                %>
+            </select>
+        <% }else {%> 
+            <select name="category" id="category">
+                <option value="main">Main</option>
+                <option value="side">Side</option>
+                <option value="drink">Drink</option>
+                <option value="appetizer">Appetizer</option>
+                <option value="dessert">Dessert</option>
+            </select><br>
+        <%}%>
+
+        <div class="uploadOuter">
+            <label for="uploadFile" class="btn btn-primary">Upload Image</label>
+            <strong>OR</strong>
+            <span class="dragBox">
+                Darg and Drop image here
+                <input type="file" value="" name="image" accept="image/*" onChange="dragNdrop(event)"
+                    ondragover="drag()" ondrop="drop()" id="uploadFile"/>
+            </span>
+        </div>
+        <div id="preview">
+            <% if(foodDoc != null) {%>
+                <img src="<%= foodDoc.image_path %>" width="200" height="200" />
+            <%}%>
+        </div>
+
+        Out of stock
+        <% if(foodDoc != null) {%> 
+            <select name="is_outofstock" id="is_outofstock">
+                <%
+                var options = [ false, true];
+                for ( var i = 0; i < options.length; i++ )
+                {
+                    var selected = ( foodDoc.is_outofstock == options[i] ) ? "selected" : "";
+                    %>
+                    <option value="<%= options[i] %>" <%=selected %>><%=options[i] %></option><%
+                }
+                %>
+            </select>
+        <% }else {%> 
+            <select name="is_outofstock" id="is_outofstock" >
+                <option value="false">false</option>
+                <option value="true">true</option>
+            </select>
+        <%}%>
+        <br>
+
+        <input type="submit">       
+    </form>
+    <%- include('../partials/footer.ejs') %>
+        <script defer>
+            
+            const checkFileSize = () => {
+                if (this.files[0].size > 0.5 * 1000000) {
+                    alert("File is too big!");
+                    this.value = "";
+                };
+            };
+
+            function dragNdrop(event) {
+                var fileName = URL.createObjectURL(event.target.files[0]);
+                if (event.target.files[0].size > 0.5 * 1000000) {
+                    alert('file too big')
+                    event.target.value = "";
+                    return
+                }
+                setPreview(fileName)
+            }
+            function setPreview(uri) {
+                var preview = document.getElementById("preview");
+                var previewImg = document.createElement("img");
+                previewImg.setAttribute("src", uri);
+                previewImg.setAttribute("width", 200);
+                previewImg.setAttribute("height", 200);
+                preview.innerHTML = "";
+                preview.appendChild(previewImg);
+            }
+            function drag() {
+                document.getElementById('uploadFile').parentNode.className = 'draging dragBox';
+            }
+            function drop() {
+                document.getElementById('uploadFile').parentNode.className = 'dragBox';
+            }
+        </script>
