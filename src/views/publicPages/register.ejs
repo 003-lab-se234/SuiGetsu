@@ -2,32 +2,103 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="/static/css/login-reg.css" />
+    <%- include('../partials/header.ejs') %>
+        <title>Register</title>
+        <link rel="stylesheet" href="/public/css/login-reg.css" />
+        <style>
+
+        </style>
 </head>
 
 <body class="Background">
-    <div id="alertBlock">
+    <div class="container-fluid " id="alertBlock">
     </div>
-    <div class="Border">
-        <h1 class="Header">Sign Up</h1>
-        <div class="TextBox">
-            
-            <input type="text" id="username" placeholder=" Username " class="InputBox" />
-            <input type="password" id="password" placeholder=" Password " class="InputBox" />
-            <input type="password" id="comfirmpassword" placeholder="Comfirm Password " class="InputBox" />
-            <input type="email" id="email" placeholder=" Email " class="InputBox" />
-            <input type="number" id="phone" placeholder=" Phone Number " class="InputBox" />
-            <div>
-                <button class="Button" id="submitBtn">Sign Up</button>
+
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body p-5">
+                        <h4 class="text-uppercase text-center mb-5">Create an account</h4>
+
+                        <form>
+                            <!-- TODO: pass id -->
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="username">Your Username</label>
+                                <input type="text" id="username" class="form-control form-control-sm" />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="email">Your Email</label>
+                                <input type="email" id="email" class="form-control form-control-sm" />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="password">Password</label>
+                                <input type="password" id="password" class="form-control form-control-sm" />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="comfirmpassword">Repeat your password</label>
+                                <input type="password" id="comfirmpassword" class="form-control form-control-sm" />
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="phone">Your Phone number</label>
+                                <input type="text" id="phone" class="form-control form-control-sm" />
+                            </div>
+
+                            <div class="d-flex justify-content-center">
+                                <button type="button"
+                                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" id="submitBtn">Register</button>
+                            </div>
+
+                            <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/auth/signin"
+                                    class="fw-bold text-body"><u>Login here</u></a></p>
+
+                        </form>
+
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
+
     <script defer>
+
+        // Thank chatGPT
+        const alertCreation = (type, mess) => {
+            const alertBox = document.createElement('div');
+            alertBox.classList.add('alert', `alert-${type}`, 'alert-dismissible', 'fade', 'show', 'my-1');
+            alertBox.setAttribute('role', 'alert');
+
+            // Create the strong tag element and add text to it
+            const strongTag = document.createElement('strong');
+            strongTag.textContent = `${type.toUpperCase()}: `;
+
+            // Create the text node for the message and append it to the strong tag element
+            const message = document.createTextNode(mess);
+            strongTag.appendChild(message);
+
+            // Create the button element for the close button
+            const closeButton = document.createElement('button');
+            closeButton.classList.add('close');
+            closeButton.setAttribute('type', 'button');
+            closeButton.setAttribute('data-dismiss', 'alert');
+            closeButton.setAttribute('aria-label', 'Close');
+
+            // Create the span element for the times symbol
+            const closeSymbol = document.createElement('span');
+            closeSymbol.setAttribute('aria-hidden', 'true');
+            closeSymbol.innerHTML = '&times;';
+
+            // Append the times symbol to the button element
+            closeButton.appendChild(closeSymbol);
+
+            // Append the strong tag and button elements to the alert box element
+            alertBox.appendChild(strongTag);
+            alertBox.appendChild(closeButton);
+            return alertBox;
+        }
 
         const validation = (data) => {
             let failList = [];
@@ -75,8 +146,8 @@
         }
 
         const submit = document.querySelector('#submitBtn');
+        const failBlock = document.querySelector('#alertBlock');
         submit.addEventListener('click', async (e) => {
-            const failBlock = document.querySelector('#alertBlock');
             failBlock.innerHTML = ''
 
             const username = document.querySelector("#username").value;
@@ -93,14 +164,14 @@
 
             // console.log(failList)
             if (failList.length >= 1) {
-
                 failList.forEach(fail => {
-                    alert(fail.message)
+                    // alert(fail.message)
 
-                    // const alert = document.createElement('div');
+                    const alert = alertCreation("danger", fail.message);
+                    console.log(alert)
                     // alert.classList.add('alert');
                     // alert.innerHTML = fail.message;
-                    // failBlock.appendChild(alert);
+                    failBlock.appendChild(alert);
                 })
                 return
             } else {
@@ -112,27 +183,28 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        username: username.toString(), 
-                        email: email.toString(), 
-                        phone_number: phone.toString() , 
+                        username: username.toString(),
+                        email: email.toString(),
+                        phone_number: phone.toString(),
                         password: password.toString()
                     })
                 })
-                .then(response => response.json())
-                .then( response => {
-                    // console.log(response)
-                    if(response.status != "success"){
-                        alert(response.message)
-                    }else{
-                        alert("success")
-                        window.location.href = '/auth/signin?username='+ username.toString()
-                    }    
-                    
-                
-                })
+                    .then(response => response.json())
+                    .then(response => {
+                        // console.log(response)
+                        if (response.status != "success") {
+                            alert(response.message)
+                        } else {
+                            alert("success")
+                            window.location.href = '/auth/signin?username=' + username.toString()
+                        }
+
+
+                    })
             }
         }); 
     </script>
+    <%- include('../partials/footer.ejs') %>
 </body>
 
 </html>
