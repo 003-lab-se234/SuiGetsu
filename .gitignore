@@ -3,5 +3,4 @@
 /log/*
 /public/uploads/foods/*
 .idea
-
 docker-compose.yml

@@ -2,8 +2,10 @@ const router = require('express').Router()
 const authController = require('../controllers/auth.controller');
 const { log } = require('../middleware');
 const { authentication, secureRoute } = require('../middleware/auth');
+const staffRouter = require('./staff.router');
 
 router.use(log)
+
 router.get('/', (req, res) => {
     res.status(200);
     res.setHeader("Content-type", "text/html");
@@ -21,5 +23,47 @@ router.get('/customer', authentication, (req, res) => {
 router.get('/staff', secureRoute, (req, res) => {
     res.send("This is staff route")
 })
+
+router.get('/about', (req, res) => {
+    // res.send("To be continued");
+    res.status(200);
+    res.setHeader('content-type', 'text/html');
+    res.render('publicPages/about.ejs');
+    // res.sendFile(path.join(__dirname, '..', '..', 'public','html', 'about.html'))
+
+})
+
+router.get('/contact', (req, res) => {
+    // res.send("To be continued");
+    res.status(200);
+    res.setHeader('content-type', 'text/html');
+    res.render('publicPages/contact.ejs');
+    // res.sendFile(path.join(__dirname, '..', '..', 'public','html', 'contact.html'));
+})
+
+router.get('/menu', (req, res) => {
+
+    // check wether user have logged in or not
+    // res.render('menu.ejs' , { user } ) if user is logged in order and cart button will be displayed
+    res.status(200);
+    res.setHeader("Content-type", "text/html");
+    res.send("To be continued");
+})
+
+router.use('/staff', staffRouter);
+
+router.use('/test/error' , (req,res) => {
+    try{
+        throw new Error("Hi this is test error.")
+        res.send(200);
+    }catch(err){
+        res.status(500);
+        res.render('publicPages/error.ejs' , {error: err})
+    }
+})
+
+router.use('*', (req,res) => {
+    res.render('publicPages/404.ejs')
+} )
 
 module.exports = router;
