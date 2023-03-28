@@ -5,25 +5,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignUp</title>
+    <title>Register</title>
     <link rel="stylesheet" href="/static/css/login-reg.css" />
 </head>
 
 <body class="Background">
+    <div id="alertBlock">
+    </div>
     <div class="Border">
         <h1 class="Header">Sign Up</h1>
-        <br>
-        <br>
         <div class="TextBox">
-            <div id="alertBlock">
-            </div>
+            
             <input type="text" id="username" placeholder=" Username " class="InputBox" />
             <input type="password" id="password" placeholder=" Password " class="InputBox" />
             <input type="password" id="comfirmpassword" placeholder="Comfirm Password " class="InputBox" />
             <input type="email" id="email" placeholder=" Email " class="InputBox" />
-            <input type="text" id="phone" placeholder=" Phone Number " class="InputBox" />
+            <input type="number" id="phone" placeholder=" Phone Number " class="InputBox" />
             <div>
-                <button class="SignUpButton" id="submitBtn">Sign Up</button>
+                <button class="Button" id="submitBtn">Sign Up</button>
             </div>
         </div>
 
@@ -96,11 +95,12 @@
             if (failList.length >= 1) {
 
                 failList.forEach(fail => {
+                    alert(fail.message)
 
-                    const alert = document.createElement('div');
-                    alert.classList.add('alert');
-                    alert.innerHTML = fail.message;
-                    failBlock.appendChild(alert);
+                    // const alert = document.createElement('div');
+                    // alert.classList.add('alert');
+                    // alert.innerHTML = fail.message;
+                    // failBlock.appendChild(alert);
                 })
                 return
             } else {
