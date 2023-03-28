@@ -3,8 +3,6 @@
 </head>
 
 <body>
-
-
     <form action="/staff/food/" method="post" enctype="multipart/form-data">
         <% if(foodDoc != null) {%>
             <input type="hidden" name="item_id" value="<%= foodDoc._id %>" />
@@ -92,7 +90,7 @@
         <%}%>
         <br>
 
-        <input type="submit">
+        <input type="submit">       
     </form>
     <%- include('../partials/footer.ejs') %>
         <script defer>

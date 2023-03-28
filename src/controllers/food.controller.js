@@ -8,51 +8,65 @@ const { paginate } = require('../utilities/paginate');
 
 const foodController = new express.Router();
 foodController.get('/', async (req, res) => {
-    // console.log(req.query)
-    let { category, page, title } = req.query;
-    let filter = {}
-    if (!page) page = 1;
-    if (category && category != "any") filter = { ...filter, category };
-    if (title) filter = { ...filter, title: { $regex: new RegExp(`${title}`), $options: 'i' } };
-
-    let sort = { is_outofstock: 1, updatedAt: 1 }
-    // console.log(filter, sort)
-    const foods = await Food.find(filter).sort(sort);
-    const paginateFood = paginate(foods, page, 6);
-
-    res.render('staffPages/foods.ejs', { data: paginateFood, category, page, title })
+    try{
+        let { category, page, title } = req.query;
+        let filter = {}
+        if (!page) page = 1;
+        if (category && category != "any") filter = { ...filter, category };
+        if (title) filter = { ...filter, title: { $regex: new RegExp(`${title}`), $options: 'i' } };
+        let sort = { is_outofstock: 1, updatedAt: 1 }
+        const foods = await Food.find(filter).sort(sort);
+        const paginateFood = paginate(foods, page, 6);
+        res.render('staffPages/foods.ejs', { data: paginateFood, category, page, title })
+    }catch(err) {
+        logger.error(err);
+        return res.redirect('/staff/food')
+    }
 })
 
-
 foodController.get('/patch/:id?', async (req, res) => {
-    const paramId = req.params.id;
-    const foodDoc = await Food.findById(paramId);
-    res.render('staffPages/foodForm.ejs', { foodDoc })
+    try{
+        const paramId = req.params.id;
+        const foodDoc = await Food.findById(paramId);
+        res.render('staffPages/foodForm.ejs', { foodDoc })
+    }catch(err){
+        logger.error(err);
+        return res.redirect('/staff/food')
+    }
 })
 
 foodController.get('/:id' , async(req,res) => {
-    const paramId = req.params.id;
-    const foodDoc = await Food.findById(paramId);
-    res.json(foodDoc);
+    try{
+        const paramId = req.params.id;
+        const foodDoc = await Food.findById(paramId);
+        res.json(foodDoc);
+    }catch(err){
+        logger.error(err);
+        return res.redirect('/staff/food')
+    }
 })
 
 foodController.get('/delete/:id' , async (req,res) => {
-    const paramId = req.params.id;
-    const foodDoc = await Food.findById(paramId);
-    await deleter(path.join(__dirname, '../..', foodDoc.image_path));
-    
-    await Food.findByIdAndDelete(paramId);
-    res.redirect('/staff/food')
+    try{
+        const paramId = req.params.id;
+        const foodDoc = await Food.findById(paramId);
+        await deleter(path.join(__dirname, '../..', foodDoc.image_path));
+        await Food.findByIdAndDelete(paramId);
+        const {title , category} = req.query ;
+        let page =  req.query.page || 1 ;
+        return res.redirect(`/staff/food?title=${title}&category=${category}&page=${page}`)
+    }catch(err){
+        logger.error(err);
+        return res.redirect('/staff/food')
+    }  
 })
 
 foodController.post('/', async (req, res) => {
-    // console.log(req.body)
     try {
         upload(req, res, async (err) => {
             const { item_id, title, description, price, category, is_outofstock } = req.body;
 
             if (item_id == undefined || item_id == '') {
-
                 if (err) {
                     logger.error(err);
                     return res.send(500)
@@ -78,8 +92,6 @@ foodController.post('/', async (req, res) => {
                 await food.save();
                 return res.redirect('/staff/food')
             } else {
-
-                console.log(item_id)
                 const oldData = await Food.findById(item_id)
                 if (!oldData) {
                     return res.redirect('/staff/food');
@@ -98,16 +110,13 @@ foodController.post('/', async (req, res) => {
                     logger.info(`Update ${update.id}`);
 
                     await deleter(path.join(__dirname, '../..', oldData.image_path));
-
-                    // console.log({ old: oldData.image_path, new: newImage })
                     return res.redirect('/staff/food');
-                    // return res.json( {image_path , ...oldData.id})
                 }
             }
         })
     } catch (err) {
         logger.error(err);
-        return res.send(500)
+        return res.redirect('/staff/food')
     }
 })
 

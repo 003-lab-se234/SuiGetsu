@@ -39,7 +39,7 @@
 <body>
 
 
-    <a href="/staff/food/patch" class="float-right mt-3 rounded btn btn-success mr-lg-5 mr-2">add food</a>
+    <a href="/staff/food/patch" class="float-right mt-3 rounded btn btn-success mr-lg-5 mr-2">Add food</a>
     <div class="container-lg container-fluid  mt-5 px-5">
 
         <h1 class="mb-3">Manage Foods</h1>
@@ -154,33 +154,32 @@
                                 <%= item.updatedAt.toISOString() %>
                             </td>
                             <td>
-                                <div style="display: inline-block;">
-                                    <a href="/staff/food/patch/<%= item.id %>"><button type="button" class="btn btn-warning">Edit</button></a>
-                                </div>
-                                <div style="display: inline-block;">
-                                    <!-- Button trigger modal -->
-                                    <a>
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                                <div class="d-grid gap-2">
+                                    <a class="w-100 mt-1" href="/staff/food/patch/<%= item.id %>">
+                                        <button type="button" class="btn btn-warning mt-1">Edit</button>
+                                    </a>
+                                    <a class="w-100 mt-1">
+                                        <button type="button" class="btn btn-danger mt-1" data-toggle="modal" data-target="#exampleModal">
                                             Delete
                                         </button>
                                     </a>
-                                    
+                                </div>                                    
                                     <!-- Modal -->
                                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Please confirm that</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                                                <h5 class="modal-title" id="exampleModalLabel">Please confirm that</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                             </div>
                                             <div class="modal-body">
                                                 <strong><%= item.title %></strong> is going to be deleted forever!
                                             </div>
                                             <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <a href="/staff/food/delete/<%= item.id %>"><button type="button" class="btn btn-danger">Delete it!</button></a>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <a href="/staff/food/delete/<%= item.id %>?category=<%= category%>&title=<%= title %>&page=<%= page %>"><button type="button" class="btn btn-danger">Delete it!</button></a>
                                             </div>
                                         </div>
                                     </div>
@@ -191,7 +190,6 @@
                         <%} ) %>
                 </tbody>
             </table>
-
 
             <div class="float-right">
                 <nav aria-label="...">
@@ -237,8 +235,6 @@
                 </nav>
             </div>
         </div>
-
-
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
