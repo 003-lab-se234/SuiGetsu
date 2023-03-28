@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/header.ejs') %>
+        <title>Health Check</title>
+</head>
+
+<body>
+    <div class="position-relative">
+        <div class="container w-25" style="left: 50%;">
+            <div class="d-block">
+                <img class="img-fluid" width="400" height="400"
+                    src="https://cdn-icons-png.flaticon.com/512/4773/4773193.png" />
+            </div>
+            <div class="d-block">
+                <h3>Health Check</h3>
+                <div class=" d-block">
+                    <p>Status: <span style="color: green;">Running</span></p>
+                    <p>Version: <%= health.version %>
+                    </p>
+                    <p>Environment: <%= health.env %>
+                    </p>
+                    <p>Database: <%= health.database %>
+                    </p>
+                    <p><a href="/">back to home</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
