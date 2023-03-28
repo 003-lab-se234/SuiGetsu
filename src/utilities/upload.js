@@ -1,6 +1,13 @@
-const path = require('path');
-
 var multer = require('multer');
+const path = require('path');
+var fs = require('fs');
+
+var dir = path.join(__dirname, '../..', '/public/uploads/foods') ;
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir, { recursive: true });
+}
+
+
 const destPath = path.join(__dirname, '../..', '/public/uploads/foods')
 
 
