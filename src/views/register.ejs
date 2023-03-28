@@ -4,15 +4,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SignUp</title>
+    <link rel="stylesheet" href="/static/css/login-reg.css" />
 </head>
-<body>
-    <form method="post" action="/auth/signup"> 
-        <input type="text" name="username" placeholder="John Smith" required>
-        <input type="text" name="email" placeholder="Johnny@cmu.ac.th" required>
-        <input type="text" name="phone_number" placeholder="0910000000" required>
-        <input type="password" name="password" placeholder="password" required>
-        <input type="submit">
-    </form>
+<body class = "Background">
+    <div class="Border">
+        <h1 class="Header" >Sign Up</h1>
+        <br>
+        <br>
+        <div class="TextBox">
+            <input type="text" name="username" required=" " placeholder=" Username " class="InputBox"/>
+            <input type="password" name="password" required=" " placeholder=" Password " class="InputBox"/>
+            <input type="password" name="comfirmpassword" required=" " placeholder="Comfirm Password " class="InputBox"/>
+            <input type="email" name="email" required=" " placeholder=" Email " class="InputBox"/>
+            <input type="email" name="phone" required=" " placeholder=" Phone Number " class="InputBox"/>
+
+ 
+        </div>
+        <div>
+            <button class="SignUpButton"> Sign Up</button>
+        </div>
+    </div>
+    
 </body>
 </html>

@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form method="post" action="/auth/signin"> 
-        <input type="text" name="email" placeholder="Johnny@cmu.ac.th" required> 
-        <input type="password" name="password" placeholder="password" required>
-        <input type="submit">
-    </form>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login_Page</title>
+    <link rel="stylesheet" href="/static/css/login-reg.css" />
+  </head>
+  <body class="Background">
+    <div class="Border">
+      <h1 class="Header">Sign In</h1>
+      <div><img src="/static/img/Logo.png" alt="" class="Logo"></div>
+      <br />
+      <br />
+      <div class="TextBox">
+        <input type="email" name="" required=" " placeholder=" Email " class="InputBox"/>
+        <input type="password" name="" required=" " placeholder=" Password " class="InputBox"/>
+      </div>
+      <div>
+        <button class="Button"> Sign In</button>
+      </div>
+    </div>
+  </body>
 </html>
