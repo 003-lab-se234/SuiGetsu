@@ -41,4 +41,8 @@ router.get('/menu', (req, res) => {
 
 router.use('/staff', staffRouter);
 
+router.use('*', (req,res) => {
+    res.render('publicPages/404.ejs')
+} )
+
 module.exports = router;

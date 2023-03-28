@@ -75,7 +75,7 @@ foodController.post('/', async (req, res) => {
                 const image = req.file === undefined ? '' : req.file.filename;
                 let image_path;
                 if (image == '') {
-                    image_path = '/public/404'
+                    image_path = '/public/404.png'
                 } else {
                     image_path = `/public/uploads/foods/${image}`
                 }
