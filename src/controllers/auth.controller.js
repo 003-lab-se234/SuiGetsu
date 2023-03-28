@@ -39,12 +39,12 @@ const isDuplicateUser = async (user) => {
 const authController = new express.Router();
 authController.get('/signin', (req, res) => {
     // res.send("<h1>This is login page</h1>");
-    const username = req.query.username ;
-    res.render('publicPages/login.ejs' , {username});
+    const username = req.query.username;
+    res.render('publicPages/login.ejs', { username, alert: null });
 })
 
 authController.get('/signup', (req, res) => {
-   
+
     res.render('publicPages/register.ejs');
 })
 
@@ -58,7 +58,7 @@ authController.post('/signin', async (req, res) => {
     const password = req.body.password;
     const regexExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gi;
     let isEmail = regexExp.test(userInputText);
-    console.log(isEmail)
+    // console.log(isEmail)
 
     try {
         let userCheck;
@@ -70,8 +70,14 @@ authController.post('/signin', async (req, res) => {
 
 
         if (!userCheck) {
-            console.log("This user does not exist.");
-            return res.redirect('/auth/signup');
+            return res.render('publicPages/login.ejs',
+                {
+                    username: userInputText,
+                    alert: {
+                        type: "warning",
+                        message: "Incorrect username or password."
+                    }
+                });
         }
 
         console.log(userCheck);
@@ -82,8 +88,14 @@ authController.post('/signin', async (req, res) => {
             console.log(req.session);
             return res.redirect('/');
         } else {
-            console.log('password incorrect')
-            return res.redirect('/auth/signup');
+            return res.render('publicPages/login.ejs',
+                {
+                    username: userInputText,
+                    alert: {
+                        type: "warning",
+                        message: "Incorrect username or password."
+                    }
+                });
         }
     } catch (err) {
         logger.error(err);
