@@ -40,7 +40,14 @@ const authController = new express.Router();
 authController.get('/signin', (req, res) => {
     // res.send("<h1>This is login page</h1>");
     const username = req.query.username;
-    res.render('publicPages/login.ejs', { username, alert: null });
+    let alert = null
+    if(req.query.q == 'session-expired'){
+        alert = {
+            type: "warning",
+            message: "Session expired."
+        }
+    }
+    res.render('publicPages/login.ejs', { username, alert });
 })
 
 authController.get('/signup', (req, res) => {
@@ -53,7 +60,7 @@ authController.get('/signout', (req, res) => {
 })
 
 authController.post('/signin', async (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     const userInputText = req.body.userInput;
     const password = req.body.password;
     const regexExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gi;
@@ -80,12 +87,12 @@ authController.post('/signin', async (req, res) => {
                 });
         }
 
-        console.log(userCheck);
+        // console.log(userCheck);
         const passwordValidation = await validation(password, userCheck.password);
 
         if (passwordValidation) {
             req.session.userId = userCheck.id;
-            console.log(req.session);
+            // console.log(req.session);
             return res.redirect('/');
         } else {
             return res.render('publicPages/login.ejs',
@@ -106,7 +113,7 @@ authController.post('/signin', async (req, res) => {
 authController.post('/signup', async (req, res) => {
     try {
         const { username, email, phone_number, password } = req.body;
-        console.log(req.body)
+        // console.log(req.body)
         const isUserExist = await isDuplicateUser({ username, email })
         console.log("is that user exist", isUserExist)
         if (isUserExist) return res.status(400).json({ "status": "failed", "message": "The user is already exist" })
