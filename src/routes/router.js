@@ -17,7 +17,8 @@ router.get('/about', (req, res) => {
     // res.send("To be continued");
     res.status(200);
     res.setHeader('content-type', 'text/html');
-    res.sendFile(path.join(__dirname, '..', '..', 'public', 'about.html'))
+    res.render('publicPages/about.ejs');
+    // res.sendFile(path.join(__dirname, '..', '..', 'public','html', 'about.html'))
 
 })
 
@@ -25,7 +26,8 @@ router.get('/contact', (req, res) => {
     // res.send("To be continued");
     res.status(200);
     res.setHeader('content-type', 'text/html');
-    res.sendFile(path.join(__dirname, '..', '..', 'public', 'contact.html'));
+    res.render('publicPages/contact.ejs');
+    // res.sendFile(path.join(__dirname, '..', '..', 'public','html', 'contact.html'));
 })
 
 router.get('/menu', (req, res) => {
