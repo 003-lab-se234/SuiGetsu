@@ -4,25 +4,70 @@ const { encode, validation } = require('../utilities/bcrypt');
 const logger = require('../utilities/logger');
 
 
+const findUserWithEmail = async (email) => {
+    try {
+        const user = await User.findOne({ email })
+        return user;
+    } catch (err) {
+        throw err;
+    }
+}
+
+const findUserWithUsername = async (username) => {
+    try {
+        const user = await User.findOne({ username })
+        return user;
+    } catch (err) {
+        throw err;
+    }
+}
+
+const isDuplicateUser = async (user) => {
+    let userCheck;
+    try {
+        userCheck = await findUserWithUsername(user.username);
+        if (userCheck) return true;
+        userCheck = await findUserWithEmail(user.email);
+        if (userCheck) return true;
+
+        return false;
+    } catch (err) {
+        throw err;
+    }
+}
+
 const authController = new express.Router();
 authController.get('/signin', (req, res) => {
     // res.send("<h1>This is login page</h1>");
-    res.render('login.ejs');
+    const username = req.query.username ;
+    res.render('publicPages/login.ejs' , {username});
 })
 
 authController.get('/signup', (req, res) => {
-    res.render('register.ejs');
+   
+    res.render('publicPages/register.ejs');
 })
 
-authController.get('/signout' , (req ,res) => {
+authController.get('/signout', (req, res) => {
     req.session.destroy(function (err) { res.redirect('/') });
 })
 
 authController.post('/signin', async (req, res) => {
-    const { email, password } = req.body;
+    console.log(req.body)
+    const userInputText = req.body.userInput;
+    const password = req.body.password;
+    const regexExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gi;
+    let isEmail = regexExp.test(userInputText);
+    console.log(isEmail)
 
     try {
-        const userCheck = await User.findOne({ email });
+        let userCheck;
+        if (isEmail) {
+            userCheck = await findUserWithEmail(userInputText)
+        } else {
+            userCheck = await findUserWithUsername(userInputText);
+        }
+
 
         if (!userCheck) {
             console.log("This user does not exist.");
@@ -47,26 +92,24 @@ authController.post('/signin', async (req, res) => {
 });
 
 authController.post('/signup', async (req, res) => {
-    const { username, email, phone_number, password } = req.body;
     try {
-
-        const userCheck = await User.findOne({ email });
-        if (userCheck) {
-            console.log("This user is already exist.");
-            return res.redirect('/auth/signup');
-        }
+        const { username, email, phone_number, password } = req.body;
+        console.log(req.body)
+        const isUserExist = await isDuplicateUser({ username, email })
+        console.log("is that user exist", isUserExist)
+        if (isUserExist) return res.status(400).json({ "status": "failed", "message": "The user is already exist" })
 
         const hashedPassword = await encode(password)
         const newUser = new User({ username, email, phone_number, password: hashedPassword })
         await newUser.save();
         req.session.userId = newUser.id;
-        console.log(req.session);
-        return res.redirect('/');
+        return res.json({ "status": "success" })
     } catch (err) {
         logger.error(err);
-        res.send(500);
+        return res.status(500).json({ "status": "failed", message: err.message });
     }
 });
+
 
 
 module.exports = authController;
