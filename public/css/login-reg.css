@@ -46,7 +46,7 @@
 }
 
 .Button {
-    position: absolute;
+    position: relative;
     bottom: 17%;
     left: 50%;
     transform: translateX(-50%);
@@ -60,7 +60,7 @@
 }
 
 .SignUpButton {
-    position: absolute;
+    position: relative;
     bottom: 5%;
     left: 50%;
     transform: translateX(-50%);
