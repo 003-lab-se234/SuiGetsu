@@ -1,16 +1,28 @@
 const router = require('express').Router()
+const { default: axios } = require('axios');
 const authController = require('../controllers/auth.controller');
 const { log } = require('../middleware');
 const { authentication, secureRoute } = require('../middleware/auth');
+const { User } = require('../models/User');
+const logger = require('../utilities/logger');
 const staffRouter = require('./staff.router');
 
 router.use(log)
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+    let user = {};
+    try {
+        const id = req.session.userId;
+        user = await User.findById(id);
+        console.log(user)
+    } catch (err) {
+        logger.error(err);
+    }
     res.status(200);
     res.setHeader("Content-type", "text/html");
     res.render('index.ejs', {
-        title: "Hello Human"
+        title: "Hello Human",
+        user
     })
 })
 
@@ -24,20 +36,34 @@ router.get('/staff', secureRoute, (req, res) => {
     res.send("This is staff route")
 })
 
-router.get('/about', (req, res) => {
-    // res.send("To be continued");
+router.get('/about', async (req, res) => {
+    let user = {};
+    try {
+        const id = req.session.userId;
+        user = await User.findById(id);
+        console.log(user)
+    } catch (err) {
+        logger.error(err);
+    }
     res.status(200);
     res.setHeader('content-type', 'text/html');
-    res.render('publicPages/about.ejs');
+    res.render('publicPages/about.ejs', { user });
     // res.sendFile(path.join(__dirname, '..', '..', 'public','html', 'about.html'))
 
 })
 
-router.get('/contact', (req, res) => {
-    // res.send("To be continued");
+router.get('/contact', async(req, res) => {
+    let user = {} ;
+    try {
+        const id = req.session.userId ;
+        user = await User.findById(id);
+        console.log(user)
+    } catch (err) {
+        logger.error(err);
+    }
     res.status(200);
     res.setHeader('content-type', 'text/html');
-    res.render('publicPages/contact.ejs');
+    res.render('publicPages/contact.ejs', {user});
     // res.sendFile(path.join(__dirname, '..', '..', 'public','html', 'contact.html'));
 })
 
@@ -52,18 +78,18 @@ router.get('/menu', (req, res) => {
 
 router.use('/staff', staffRouter);
 
-router.use('/test/error' , (req,res) => {
-    try{
+router.use('/test/error', (req, res) => {
+    try {
         throw new Error("Hi this is test error.")
         res.send(200);
-    }catch(err){
+    } catch (err) {
         res.status(500);
-        res.render('publicPages/error.ejs' , {error: err})
+        res.render('publicPages/error.ejs', { error: err })
     }
 })
 
-router.use('*', (req,res) => {
+router.use('*', (req, res) => {
     res.render('publicPages/404.ejs')
-} )
+})
 
 module.exports = router;

@@ -39,12 +39,11 @@ const isDuplicateUser = async (user) => {
 const authController = new express.Router();
 authController.get('/signin', (req, res) => {
     // res.send("<h1>This is login page</h1>");
-    const username = req.query.username ;
-    res.render('publicPages/login.ejs' , {username});
+    const username = req.query.username;
+    res.render('publicPages/login.ejs', { username });
 })
 
 authController.get('/signup', (req, res) => {
-   
     res.render('publicPages/register.ejs');
 })
 
@@ -109,6 +108,18 @@ authController.post('/signup', async (req, res) => {
         return res.status(500).json({ "status": "failed", message: err.message });
     }
 });
+
+authController.get('/user/:id', async (req, res) => {
+    try {
+        const id = req.params.id ;
+        const user = await User.findById(id);
+        res.status(200);
+        res.json(user);
+     } catch (err) {
+        logger.error(err);
+        return res.status(500).json({ "status": "failed", message: err.message });
+    }
+})
 
 
 
