@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const { default: axios } = require('axios');
+const config = require('../config/config');
 const authController = require('../controllers/auth.controller');
 const { log } = require('../middleware');
 const { authentication, secureRoute } = require('../middleware/auth');
@@ -77,6 +78,12 @@ router.get('/menu', (req, res) => {
 })
 
 router.use('/staff', staffRouter);
+
+router.get('/status', (req, res) => {
+    res.status(200);
+    res.render('publicPages/health.ejs', { health: config.getConfig() })
+    // res.json(config.printOut())
+})
 
 router.use('/test/error', (req, res) => {
     try {

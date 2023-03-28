@@ -22,11 +22,6 @@ app.set('view engine', 'ejs');
 app.use('/public', express.static(path.join(__dirname, "public")));
 app.use('/', router);
 
-app.get('/status', (req, res) => {
-    res.status(200);
-    res.json(config.printOut())
-})
-
 app.listen(config.port, () => {
     logger.info(`Server is running on port ${config.port}`)
 })
