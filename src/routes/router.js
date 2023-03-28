@@ -41,6 +41,16 @@ router.get('/menu', (req, res) => {
 
 router.use('/staff', staffRouter);
 
+router.use('/test/error' , (req,res) => {
+    try{
+        throw new Error("Hi this is test error.")
+        res.send(200);
+    }catch(err){
+        res.status(500);
+        res.render('publicPages/error.ejs' , {error: err})
+    }
+})
+
 router.use('*', (req,res) => {
     res.render('publicPages/404.ejs')
 } )

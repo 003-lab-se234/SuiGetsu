@@ -20,7 +20,8 @@ foodController.get('/', async (req, res) => {
         res.render('staffPages/foods.ejs', { data: paginateFood, category, page, title })
     }catch(err) {
         logger.error(err);
-        return res.redirect('/staff/food')
+        res.status(500);
+        return res.render('publicPages/error.ejs' , {error: err})
     }
 })
 
@@ -31,7 +32,8 @@ foodController.get('/patch/:id?', async (req, res) => {
         res.render('staffPages/foodForm.ejs', { foodDoc })
     }catch(err){
         logger.error(err);
-        return res.redirect('/staff/food')
+        res.status(500);
+        return res.render('publicPages/error.ejs' , {error: err})
     }
 })
 
@@ -42,7 +44,8 @@ foodController.get('/:id' , async(req,res) => {
         res.json(foodDoc);
     }catch(err){
         logger.error(err);
-        return res.redirect('/staff/food')
+        res.status(500);
+        return res.render('publicPages/error.ejs' , {error: err})
     }
 })
 
@@ -57,7 +60,8 @@ foodController.get('/delete/:id' , async (req,res) => {
         return res.redirect(`/staff/food?title=${title}&category=${category}&page=${page}`)
     }catch(err){
         logger.error(err);
-        return res.redirect('/staff/food')
+        res.status(500);
+        return res.render('publicPages/error.ejs' , {error: err})
     }  
 })
 
@@ -116,7 +120,8 @@ foodController.post('/', async (req, res) => {
         })
     } catch (err) {
         logger.error(err);
-        return res.redirect('/staff/food')
+        res.status(500);
+        return res.render('publicPages/error.ejs' , {error: err})
     }
 })
 
