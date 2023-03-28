@@ -10,13 +10,14 @@ jobs:
   tagging:
     name: tagging
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - 
         name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0 
-          # token: ${{ secrets.PAT }}
+          token: ${{ secrets.PAT }}
       - 
         name: Get semantic versioning
         id: versioning
@@ -35,7 +36,7 @@ jobs:
           npm version v${{ steps.versioning.outputs.version }}
           git push --follow-tags 
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-app:
     needs: tagging
