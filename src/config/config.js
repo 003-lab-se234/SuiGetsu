@@ -6,9 +6,11 @@ class Config {
     env;
     database;
     dbHost;
+    sessionSecret ;
     constructor() {
         this.port = parseInt(process.env.PORT, 10) || 8080;
         this.env = process.env.ENV || 'dev';
+        this.sessionSecret = process.env.SESSION_SECRET || 'sawanohiroyuki'
         const host = process.env.MONGO_HOST || '127.0.0.1';
         const dbPort = process.env.MONGO_PORT || '27017';
 

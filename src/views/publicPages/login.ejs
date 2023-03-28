@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+  <link rel="stylesheet" href="/static/css/login-reg.css" />
+</head>
+
+<body class="Background">
+  <div class="Border">
+    <h1 class="Header">Sign In</h1>
+    <div><img src="/static/img/Logo.png" alt="" class="Logo"></div>
+    
+    <form method="post" action="/auth/signin" class="TextBox" enctype="application/json"> 
+      <input type="text" name="userInput" 
+      <% if(username != null) {%> value="<%= username %>" <% } %>
+      required placeholder="Your username or email" class="InputBox" />
+      <input type="password" name="password" placeholder="Password" class="InputBox" required/>
+      
+      <p style="text-align: right;margin-right: 1em;"><a href="/auth/signup">Sign up</a></p>
+      <input type="submit" class="Button" value="Sign In">
+    </form>
+  </div>
+</body>
+
+</html>
