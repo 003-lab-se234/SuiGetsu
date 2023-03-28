@@ -9,7 +9,6 @@ const logger = require('../utilities/logger');
 const staffRouter = require('./staff.router');
 
 router.use(log)
-
 router.get('/', async (req, res) => {
     let user = {};
     try {
@@ -27,15 +26,6 @@ router.get('/', async (req, res) => {
     })
 })
 
-router.use('/auth', authController);
-
-router.get('/customer', authentication, (req, res) => {
-    res.send("This is customer route ")
-})
-
-router.get('/staff', secureRoute, (req, res) => {
-    res.send("This is staff route")
-})
 
 router.get('/about', async (req, res) => {
     let user = {};
@@ -69,15 +59,14 @@ router.get('/contact', async(req, res) => {
 })
 
 router.get('/menu', (req, res) => {
-
-    // check wether user have logged in or not
-    // res.render('menu.ejs' , { user } ) if user is logged in order and cart button will be displayed
     res.status(200);
     res.setHeader("Content-type", "text/html");
     res.send("To be continued");
 })
 
-router.use('/staff', staffRouter);
+router.use('/staff', secureRoute ,staffRouter);
+// router.use('/user', authentication , userRouter);
+router.use('/auth', authController);
 
 router.get('/status', (req, res) => {
     res.status(200);

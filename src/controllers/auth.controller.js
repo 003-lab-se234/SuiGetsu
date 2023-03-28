@@ -40,7 +40,14 @@ const authController = new express.Router();
 authController.get('/signin', (req, res) => {
     // res.send("<h1>This is login page</h1>");
     const username = req.query.username;
-    res.render('publicPages/login.ejs', { username, alert: null });
+    let alert = null
+    if(req.query.q == 'session-expired'){
+        alert = {
+            type: "warning",
+            message: "Session expired."
+        }
+    }
+    res.render('publicPages/login.ejs', { username, alert });
 })
 
 authController.get('/signup', (req, res) => {
