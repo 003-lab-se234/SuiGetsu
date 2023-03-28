@@ -5,6 +5,7 @@ const upload = require('../utilities/upload').single('image');
 const path = require('path');
 const deleter = require('../utilities/deleter');
 const { paginate } = require('../utilities/paginate');
+const { User } = require('../models/User');
 
 const foodController = new express.Router();
 foodController.get('/', async (req, res) => {
@@ -17,7 +18,10 @@ foodController.get('/', async (req, res) => {
         let sort = { is_outofstock: 1, updatedAt: 1 }
         const foods = await Food.find(filter).sort(sort);
         const paginateFood = paginate(foods, page, 6);
-        res.render('staffPages/foods.ejs', { data: paginateFood, category, page, title })
+
+        const userId = req.session.userId;
+        const user = await User.findById(userId);
+        res.render('staffPages/foods.ejs', { user, data: paginateFood, category, page, title , user })
     }catch(err) {
         logger.error(err);
         res.status(500);

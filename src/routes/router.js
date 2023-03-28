@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
     try {
         const id = req.session.userId;
         user = await User.findById(id);
-        console.log(user)
+        // console.log(user)
     } catch (err) {
         logger.error(err);
     }
@@ -32,7 +32,6 @@ router.get('/about', async (req, res) => {
     try {
         const id = req.session.userId;
         user = await User.findById(id);
-        console.log(user)
     } catch (err) {
         logger.error(err);
     }
@@ -48,7 +47,7 @@ router.get('/contact', async(req, res) => {
     try {
         const id = req.session.userId ;
         user = await User.findById(id);
-        console.log(user)
+        // console.log(user)
     } catch (err) {
         logger.error(err);
     }
