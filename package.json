@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/003-lab-se234/SuiGetsu#readme",
   "dependencies": {
+    "axios": "^1.3.4",
     "bcryptjs": "^2.4.3",
     "connect-mongo": "^5.0.0",
     "dotenv": "^16.0.3",

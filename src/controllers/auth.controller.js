@@ -122,6 +122,18 @@ authController.post('/signup', async (req, res) => {
     }
 });
 
+authController.get('/user/:id', async (req, res) => {
+    try {
+        const id = req.params.id ;
+        const user = await User.findById(id);
+        res.status(200);
+        res.json(user);
+     } catch (err) {
+        logger.error(err);
+        return res.status(500).json({ "status": "failed", message: err.message });
+    }
+})
+
 
 
 module.exports = authController;
