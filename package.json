@@ -1,7 +1,6 @@
 {
   "name": "suigetsu",
   "version": "0.1.1",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
@@ -32,5 +31,9 @@
   },
   "devDependencies": {
     "jest": "^29.5.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "description": ""
 }

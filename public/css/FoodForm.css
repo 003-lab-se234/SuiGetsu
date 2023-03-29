@@ -1,6 +1,6 @@
 .uploadOuter {
     text-align: center;
-    padding: 20px;   
+    padding: 0px;   
 }
 
 .uploadOuter strong {
@@ -40,4 +40,48 @@
 
 #preview img {
     max-width: 100%
+}
+
+.LineBox{
+    width: 40%;
+    height: auto;
+    margin: auto;
+    margin-top: 20px;
+    background-color: #ffffff;
+    border: #FFD381 2px solid;
+    padding-bottom: 20px;
+
+    text-align: center;
+}
+
+
+.Box{
+    align-items: center;
+    text-align: center;
+    margin: auto;
+}
+
+.ColorButton{
+        background-color: #9F1315;
+        color: #FFD381;
+        margin: 10px;
+        border: 2px solid #FFD381;
+        border-radius: none;
+        padding: 5px;
+        /* width: 75px;
+        height: 40px; */
+}
+
+h5{
+    padding: 10px;
+}
+
+
+
+
+.TopBorder{
+    background-color: #9F1315;
+    color: #FFD381;
+    border-bottom: #FFD381 2px solid;
+    padding: 10px;
 }
