@@ -1,40 +1,18 @@
 const mongoose = require("mongoose");
 
-
-const RecordSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        trim: true,
-        require: true
-    },
-    price: {
-        type: Number,
-        require: true
-    },
-    category: {
-        type: String,
-        enum: ['main', 'side', 'drink', 'appetizer', 'dessert']
-    },
-    image_path: {
-        type: String
-    },
-    quantity: {
-        type: Number,
-        require: true
-    }
-})
-
-
 const OrderSchema = new mongoose.Schema({
     owner_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         require: true
     },
-    records: { 
-        type: [RecordSchema], 
-        require: true 
-    },
-    desitination: {
+    records: [{
+        item: {
+            type: mongoose.Schema.Types.ObjectId ,
+            ref: 'food'
+        },
+        qty: Number
+    }],
+        desitination: {
         type: String,
         require: true 
     },
@@ -50,13 +28,13 @@ const OrderSchema = new mongoose.Schema({
         type: Number,
         require: true
     },
-    category: {
+    status: {
         type: String,
         enum: ['pending', 'cooking', 'delivery', 'delivered'],
         default: 'pending'
-    }
+    },
+    note: String
 
-});
+})
 
-exports.RecordDoc = mongoose.model('record', RecordSchema)
 exports.Order = mongoose.model('order', OrderSchema);

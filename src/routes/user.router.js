@@ -1,7 +1,7 @@
 const express = require('express');
 const Cart = require('../models/Cart');
 const { Food } = require('../models/Food');
-const { RecordDoc, Order } = require('../models/Order');
+const { Order } = require('../models/Order');
 const { User } = require('../models/User');
 const logger = require('../utilities/logger');
 
@@ -13,7 +13,6 @@ userRouter.get('/', async (req, res) => {
 
 userRouter.get('/checkout', async (req, res) => {
     try {
-        console.log(req.session.cart);
         const id = req.session.userId;
         const user = await User.findById(id);
         const cart = new Cart(req.session.cart ? req.session.cart : {});
@@ -29,7 +28,7 @@ userRouter.get('/checkout', async (req, res) => {
 
 userRouter.post('/checkout', async (req, res) => {
     try {
-        if (!req.session.cart) throw new Error("Invalid items")
+        if (!req.session.cart || req.session.cart.totalQty == 0) throw new Error("Invalid items")
         const cart = new Cart(req.session.cart);
 
         const { houseNumber, amphoe, district, province, country, zipcode, note } = req.body;
@@ -40,17 +39,12 @@ userRouter.post('/checkout', async (req, res) => {
 
         let records = [];
         cart.toArray().forEach(record => {
-            console.log(record)
-            const docRec = new RecordDoc({
-                title: record.item.title,
-                price: record.item.price,
-                category: record.item.category,
-                image_path: record.item.image_path,
-                quantity: record.qty
-            })
+            const docRec = {
+                item: record.item._id,
+                qty: record.qty
+            }
             records.push(docRec)
         })
-
 
         const payload = {
             owner_id,
@@ -58,7 +52,8 @@ userRouter.post('/checkout', async (req, res) => {
             desitination: address,
             shipping_price,
             product_price,
-            total_price: Number(product_price) + Number(shipping_price)
+            total_price: Number(product_price) + Number(shipping_price),
+            note
         }
         // res.json(payload)
         const order = new Order(payload);
@@ -80,11 +75,9 @@ userRouter.post('/cart', async (req, res) => {
         const { id, qty } = req.body;
 
         const foodDoc = await Food.findById(id);
-
         if (!foodDoc) throw new Error('Invalid item');
+        
         cart.add(foodDoc, Number(qty))
-        // console.log(cart.records.length)
-
         req.session.cart = cart;
         res.json({ "status": "success" })
     } catch (err) {
@@ -112,7 +105,7 @@ userRouter.get('/orders' , async(req,res) => {
     try{
         const owner_id = req.session.userId ;
         // res.send('Show all orders')
-        const orders = await Order.find({owner_id});
+        const orders = await Order.find({owner_id}).populate('records.item');
         res.json(orders);
     }catch(err){
         logger.error(err);
@@ -124,7 +117,7 @@ userRouter.get('/orders' , async(req,res) => {
 userRouter.get('/order/:orderId' , async(req,res) => {
     try{
         const orderId = req.params.orderId ;
-        const order = await Order.findById(orderId);
+        const order = await Order.findById(orderId).populate('records.item');
         res.json(order);
     }catch(err){
         logger.error(err);
