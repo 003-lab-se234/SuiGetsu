@@ -21,7 +21,6 @@
     <%- include('../components/navbar.ejs') %>
 
         <div class="container-lg container-fluid  mt-5 px-5">
-
             <h1 class="mb-3">Search for your meal</h1>
             <div class="input-group mb-3">
                 <form class="form-inline my-2 my-lg-0" method="get">
@@ -32,7 +31,9 @@
                     <button class="btn btn-outline-success my-2 my-sm-0 ml-2" type="submit">Search</button>
                 </form>
             </div>
-
+            <% if(user != null) {%>
+                <%- include('../components/cartModal.ejs') %>
+            <%}%>
             <nav class="d-none d-lg-block">
                 <div class="nav nav-tabs nav-responsive-lg ">
                     <!-- check is anything selected -->
@@ -72,8 +73,6 @@
 
                 </div>
             </div>
-
-
             <div class="container-fluid mb-3">
                 <% if(data.items.length==0) {%>
                     <div class="container-fluid text-center">
@@ -99,6 +98,7 @@
                                                 <%= item.description %><br><br>
                                             </p>
                                         </div>
+                                        
                                         <div class="align-items-center align-content-center col-md-3 mt-1">
                                             <div class="d-flex flex-row align-items-center">
                                                 <h4 class="mr-1">
@@ -111,8 +111,9 @@
                                                     data-target="#exampleModal<%= item.id %>">
                                                     Details
                                                 </button>
-                                                                        
-                                                <button class="btn btn-outline-primary btn-sm mt-2" id="addToCartBtn" type="button" onclick=" {
+
+                                                <button class="btn btn-outline-primary btn-sm mt-2" id="addToCartBtn"
+                                                    type="button" onclick=" {
                                                     const id = '<%=item.id%>';
                                                     handleToCart(id)
                                                 }">
@@ -144,7 +145,7 @@
                                                                 <p>
                                                                     &emsp;<%= item.description %>
                                                                 </p>
-
+                                                                <hr />
                                                                 <div class="row">
                                                                     <div class="align-items-center col-12 col-md-6">
 
@@ -184,8 +185,8 @@
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-dismiss="modal">Close</button>
-                                                                <a><button type="button" class="btn btn-success" id="addToCartBtn"
-                                                                        onclick=" {
+                                                                <a><button type="button" class="btn btn-success"
+                                                                        id="addToCartBtn" onclick=" {
                                                                 const id = '<%=item.id%>';
                                                                 handleToCart(id)
                                                             }">Add to cart</button></a>
@@ -201,75 +202,79 @@
                         </div>
                         <%}%>
             </div>
-            <div class="float-right">
+    
+            <div class="float-left">
                 <nav aria-label="...">
                     <ul class="pagination">
                         <% if(data.previousPage==null) {%>
                             <li class="page-item disabled">
                                 <a class="page-link" href="#" aria-disabled="true">Previous</a>
                             </li>
-                        <% }else{ %>
-                            <li class="page-item">
-                                <a class="page-link"
-                                    href="?category=<%= category%>&page=<%= data.previousPage %>">Previous</a>
-                            </li>
-                        <% } %>
-                        <% if(data.previousPage !=null) {%>
-                            <li class="page-item">
-                                <a class="page-link"
-                                    href="?category=<%= category%>&page=<%= data.previousPage %>">
-                                    <%= data.previousPage %>
-                                </a>
-                            </li>
-                        <%}%>
-                        <li class="page-item active" aria-current="page">
-                            <a class="page-link" href="#">
-                                <%= page%><span class="sr-only">(current)</span>
-                            </a>
-                        </li>
+                            <% }else{ %>
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        href="?category=<%= category%>&page=<%= data.previousPage %>">Previous</a>
+                                </li>
+                                <% } %>
+                                    <% if(data.previousPage !=null) {%>
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="?category=<%= category%>&page=<%= data.previousPage %>">
+                                                <%= data.previousPage %>
+                                            </a>
+                                        </li>
+                                        <%}%>
+                                            <li class="page-item active" aria-current="page">
+                                                <a class="page-link" href="#">
+                                                    <%= page%><span class="sr-only">(current)</span>
+                                                </a>
+                                            </li>
 
-                        <% if(data.nextPage !=null) {%>
-                            <li class="page-item">
-                                <a class="page-link"
-                                    href="?category=<%= category%>&page=<%= data.nextPage %>">
-                                    <%= data.nextPage %>
-                                </a>
-                            </li>
-                        <%}%>
+                                            <% if(data.nextPage !=null) {%>
+                                                <li class="page-item">
+                                                    <a class="page-link"
+                                                        href="?category=<%= category%>&page=<%= data.nextPage %>">
+                                                        <%= data.nextPage %>
+                                                    </a>
+                                                </li>
+                                                <%}%>
 
 
-                        <% if(data.nextPage==null) {%>
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" aria-disabled="true">Next</a>
-                            </li>
-                        <% }else{ %>
-                            <li class="page-item">
-                                <a class="page-link"
-                                    href="?category=<%= category%>&page=<%= data.nextPage %>">Next</a>
-                            </li>
-                        <% } %>
+                                                    <% if(data.nextPage==null) {%>
+                                                        <li class="page-item disabled">
+                                                            <a class="page-link" href="#" aria-disabled="true">Next</a>
+                                                        </li>
+                                                        <% }else{ %>
+                                                            <li class="page-item">
+                                                                <a class="page-link"
+                                                                    href="?category=<%= category%>&page=<%= data.nextPage %>">Next</a>
+                                                            </li>
+                                                            <% } %>
                     </ul>
                 </nav>
             </div>
+            
         </div>
+
         <%- include('../partials/footer.ejs') %>
+        
             <script>
                 const handleToCart = (id) => {
                     let user_id = '';
-                    <% if(user != null){%>
-                        user_id = '<%= user.id %>' ;
+                    <% if (user != null) {%>
+                        user_id = '<%= user.id %>';
                     <%}%>
 
-                    if(user_id == '') {
+                    if (user_id == '') {
                         alert("Please login first")
                         window.location.href = '/auth/signin'
                         return;
                     }
                     const qtyInput = document.querySelector(`#f-${id}`);
                     // console.log(qty.value);
-                    
+
                     const payload = { id, qty: qtyInput.value }
-                    const url = `/user/cart/${user_id}` ;
+                    const url = `/user/cart`;
                     const option = {
                         method: "post",
                         headers: {
@@ -277,10 +282,18 @@
                         },
                         body: JSON.stringify(payload)
                     }
-                    console.log(url , option)
-                    // fetch('/user/cart/')
+                    // console.log(url , option)
+                    fetch('/user/cart/', option)
+                        .then(response => response.json())
+                        .then(res => { 
+                            if(res.status == "success"){
+                                alert('Added')
+                            }else{
+                                alert('Error' , res.message)
+                            }
+                            location.reload();
+                        })
 
-                    // location.reload();
                 }
             </script>
 
