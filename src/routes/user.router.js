@@ -9,22 +9,18 @@ userRouter.get('/', async (req, res) => {
     res.send('This is user dashboard');
 })
 
-userRouter.get('/cart', (req, res) => {
+userRouter.get('/checkout', (req, res) => {
     res.send(req.session.cart);
 })
+
 userRouter.post('/cart', async (req, res) => {
     try {
         const cart = new Cart(req.session.cart ? req.session.cart : {});
-        // console.log(cart)
-        // const userId = req.session.userId ;
         const { id, qty } = req.body;
 
         const foodDoc = await Food.findById(id);
-        // console.log(foodDoc)
 
         if (!foodDoc) throw new Error('Invalid item');
-
-
         cart.add(foodDoc, Number(qty))
         // console.log(cart.records.length)
 
@@ -32,6 +28,22 @@ userRouter.post('/cart', async (req, res) => {
         res.json({ "status": "success" })
     } catch (err) {
         res.json({ "status": "error", message: err.message })
+    }
+})
+
+userRouter.get('/remove/:id' , (req,res) => {
+    try{
+        if(!req.session.cart) throw new Error("Invalid cart");
+        const id = req.params.id ;
+        const cart = new Cart(req.session.cart);
+        cart.remove(id);
+        // cart.reloadCart();
+        req.session.cart = cart;
+        return res.redirect('/menu');
+    }catch(err){
+        logger.error(err);
+        res.status(500);
+        return res.render('publicPages/error.ejs', { error: err })
     }
 })
 

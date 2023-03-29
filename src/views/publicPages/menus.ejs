@@ -21,7 +21,6 @@
     <%- include('../components/navbar.ejs') %>
 
         <div class="container-lg container-fluid  mt-5 px-5">
-
             <h1 class="mb-3">Search for your meal</h1>
             <div class="input-group mb-3">
                 <form class="form-inline my-2 my-lg-0" method="get">
@@ -32,7 +31,9 @@
                     <button class="btn btn-outline-success my-2 my-sm-0 ml-2" type="submit">Search</button>
                 </form>
             </div>
-
+            <% if(user != null) {%>
+                <%- include('../components/cartModal.ejs') %>
+            <%}%>
             <nav class="d-none d-lg-block">
                 <div class="nav nav-tabs nav-responsive-lg ">
                     <!-- check is anything selected -->
@@ -72,8 +73,6 @@
 
                 </div>
             </div>
-
-
             <div class="container-fluid mb-3">
                 <% if(data.items.length==0) {%>
                     <div class="container-fluid text-center">
@@ -99,6 +98,7 @@
                                                 <%= item.description %><br><br>
                                             </p>
                                         </div>
+                                        
                                         <div class="align-items-center align-content-center col-md-3 mt-1">
                                             <div class="d-flex flex-row align-items-center">
                                                 <h4 class="mr-1">
@@ -145,7 +145,7 @@
                                                                 <p>
                                                                     &emsp;<%= item.description %>
                                                                 </p>
-
+                                                                <hr />
                                                                 <div class="row">
                                                                     <div class="align-items-center col-12 col-md-6">
 
@@ -202,7 +202,8 @@
                         </div>
                         <%}%>
             </div>
-            <div class="float-right">
+    
+            <div class="float-left">
                 <nav aria-label="...">
                     <ul class="pagination">
                         <% if(data.previousPage==null) {%>
@@ -252,8 +253,11 @@
                     </ul>
                 </nav>
             </div>
+            
         </div>
+
         <%- include('../partials/footer.ejs') %>
+        
             <script>
                 const handleToCart = (id) => {
                     let user_id = '';
@@ -281,9 +285,15 @@
                     // console.log(url , option)
                     fetch('/user/cart/', option)
                         .then(response => response.json())
-                        .then(res => { console.log(res)})
+                        .then(res => { 
+                            if(res.status == "success"){
+                                alert('Added')
+                            }else{
+                                alert('Error' , res.message)
+                            }
+                            location.reload();
+                        })
 
-                    // location.reload();
                 }
             </script>
 

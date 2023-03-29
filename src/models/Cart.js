@@ -51,4 +51,12 @@ module.exports = function Cart(oldCart) {
         this.totalPrice = newTotalPrice;
     }
 
+    this.toArray = () => {
+        let arr = [];
+        for(let id in this.records ){
+            arr.push(this.records[id])
+        }
+        return arr ;
+    } 
+
 }

@@ -4,6 +4,7 @@ const config = require('../config/config');
 const authController = require('../controllers/auth.controller');
 const { log } = require('../middleware');
 const { authentication, secureRoute } = require('../middleware/auth');
+const Cart = require('../models/Cart');
 const { Food } = require('../models/Food');
 const { User } = require('../models/User');
 const logger = require('../utilities/logger');
@@ -64,6 +65,8 @@ router.get('/menu', async (req, res) => {
     try {
         let user = {};
         const id = req.session.userId;
+        const cart = new Cart(req.session.cart ? req.session.cart : {});
+
         user = await User.findById(id);
 
         let { category, page, title } = req.query;
@@ -74,7 +77,8 @@ router.get('/menu', async (req, res) => {
         let sort = { is_outofstock: 1, updatedAt: 1 }
         const foods = await Food.find(filter).sort(sort);
         const paginateFood = paginate(foods, page, 6);
-        res.render('publicPages/menus.ejs', { user, data: paginateFood, category, page, title });
+        
+        res.render('publicPages/menus.ejs', { user,cart, data: paginateFood, category, page, title });
 
 
     } catch (err) {
