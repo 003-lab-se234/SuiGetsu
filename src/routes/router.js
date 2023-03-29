@@ -9,6 +9,7 @@ const { User } = require('../models/User');
 const logger = require('../utilities/logger');
 const { paginate } = require('../utilities/paginate');
 const staffRouter = require('./staff.router');
+const userRouter = require('./user.router');
 
 router.use(log)
 router.get('/', async (req, res) => {
@@ -84,7 +85,7 @@ router.get('/menu', async (req, res) => {
 })
 
 router.use('/staff', secureRoute, staffRouter);
-// router.use('/user', authentication , userRouter);
+router.use('/user', authentication , userRouter);
 router.use('/auth', authController);
 
 router.get('/status', (req, res) => {
