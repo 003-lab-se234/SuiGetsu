@@ -108,8 +108,8 @@
                                             <input type="text" class="form-control" id="province" name="province" placeholder="province" required>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label for="hZIP code">ZIP code</label>
-                                            <input type="text" class="form-control" id="zipcode" id="name" placeholder="house no." required>
+                                            <label for="ZIP code">ZIP code</label>
+                                            <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Zip code" required>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="Country">Country</label>
@@ -119,7 +119,7 @@
                                             <label for="Note">Note</label>
                                             <textarea class="form-control" id="note" name="note"></textarea>
                                         </div>
-
+                                        
 
                                     <button type="submit" class="btn my-2 btn-success <%if(cart.totalQty == 0) {%> disabled<%}%>" <%if(cart.totalQty>= 1)
                                     {%> id="submitBtn" <%}%>>Checkout</button>

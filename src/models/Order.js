@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 
-const record = new mongoose.Schema({
+const RecordSchema = new mongoose.Schema({
     title: {
         type: String,
         trim: true,
@@ -22,7 +22,6 @@ const record = new mongoose.Schema({
         type: Number,
         require: true
     }
-
 })
 
 
@@ -32,14 +31,32 @@ const OrderSchema = new mongoose.Schema({
         require: true
     },
     records: { 
-        type: [record], 
+        type: [RecordSchema], 
         require: true 
     },
     desitination: {
         type: String,
         require: true 
+    },
+    shipping_price: {
+        type: Number ,
+        default: 15 
+    },
+    product_price: {
+        type: Number,
+        require: true
+    },
+    total_price: {
+        type: Number,
+        require: true
+    },
+    category: {
+        type: String,
+        enum: ['pending', 'cooking', 'delivery', 'delivered'],
+        default: 'pending'
     }
 
 });
 
-exports.Food = mongoose.model('order', OrderSchema);
+exports.RecordDoc = mongoose.model('record', RecordSchema)
+exports.Order = mongoose.model('order', OrderSchema);
