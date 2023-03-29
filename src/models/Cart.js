@@ -1,19 +1,26 @@
 const Record = require("./Record");
 
-module.exports = function Cart() {
-    this.records = [];
-    this.totalQty = 0;
-    this.totalPrice = 0;
+module.exports = function Cart(oldCart) {
+    this.records = oldCart.records || {} ;
+    this.totalQty = oldCart.totalQty || 0;
+    this.totalPrice = oldCart.totalPrice || 0;
 
     this.add = (item, qty) => {
         let record = this.records[item.id];
-        if (!record) {
-            this.records[item.id] = new Record(item, qty);
+        // console.log(this.records)
+        if (record == null) {
+            // console.log("Create new record")
+            const newRec = new Record(item, qty) ;
+            this.records[item.id] = newRec;
+
         } else {
+            // console.log("Push record")
             this.records[item.id].qty += qty;
         }
         this.totalQty += qty;
         this.totalPrice += (item.price * qty);
+
+        // console.log(this.records)
     }
 
     this.remove = (id) => {
