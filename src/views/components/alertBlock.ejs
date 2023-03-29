@@ -1,0 +1,54 @@
+<div class="container-fluid position-fixed" id="alertBlock" style="z-index: 1090;">
+</div>
+
+
+<script defer>
+
+    const alertBlock = document.querySelector('#alertBlock');
+
+    const callAlert = (type, mess) => {
+        const alert = alertCreation(type, mess);
+        alertBlock.appendChild(alert);
+        document.querySelectorAll('.js-alert').forEach(function ($el) {
+            setTimeout(() => {
+                $el.parentNode.removeChild($el)
+            }, 2000);
+        });
+    }
+
+    const alertCreation = (type, mess) => {
+        const alertBox = document.createElement('div');
+        alertBox.classList.add('alert', `alert-${type}`, 'alert-dismissible', 'fade', 'show', 'my-1', 'js-alert');
+        alertBox.setAttribute('role', 'alert');
+
+        // Create the strong tag element and add text to it
+        const strongTag = document.createElement('strong');
+        strongTag.textContent = `${type.toUpperCase()}: `;
+
+        // Create the text node for the message and append it to the strong tag element
+        const message = document.createTextNode(mess);
+        strongTag.appendChild(message);
+
+        // Create the button element for the close button
+        const closeButton = document.createElement('button');
+        closeButton.classList.add('close');
+        closeButton.setAttribute('type', 'button');
+        closeButton.setAttribute('data-dismiss', 'alert');
+        closeButton.setAttribute('aria-label', 'Close');
+
+        // Create the span element for the times symbol
+        const closeSymbol = document.createElement('span');
+        closeSymbol.setAttribute('aria-hidden', 'true');
+        closeSymbol.innerHTML = '&times;';
+
+        // Append the times symbol to the button element
+        closeButton.appendChild(closeSymbol);
+
+        // Append the strong tag and button elements to the alert box element
+        alertBox.appendChild(strongTag);
+        alertBox.appendChild(closeButton);
+
+        return alertBox;
+    }
+
+</script>
