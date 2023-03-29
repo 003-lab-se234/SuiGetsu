@@ -17,8 +17,8 @@ data-toggle="modal" data-target="#cartModal">
             </div>
             <div class="modal-body">
 
-                <% if(cart.records == {}) {%>
-                    <div class="container-fluid text-center">
+                <% if(cart.totalQty == 0) {%>
+                    <div class="text-center">
                         <img src="/public/empty.png" width="300" height="300" class="img-fluid img-responsive" />
                         <h4 class="p-3"><b>Oops!</b> No items, please add item to your cart</h4>
                     </div>

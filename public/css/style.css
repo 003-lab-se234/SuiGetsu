@@ -1,19 +1,34 @@
 h5 {
     font-family: 'Alkatra', cursive;
 }
+
 h2 {
     font-family: 'Josefin Sans', sans-serif;
 }
+
 h1 {
     /* font-family: 'Fasthand', cursive; */
     font-family: 'Alkatra', cursive;
 }
+
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
 }
-p , strong , b , em {
-    font-family: 'Poppins', sans-serif;
+
+body::-webkit-scrollbar {
+    display: none;
 }
 
+/* Hide scrollbar for IE, Edge and Firefox */
+body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
 
+p,
+strong,
+b,
+em {
+    font-family: 'Poppins', sans-serif;
+}

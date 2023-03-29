@@ -41,6 +41,7 @@
                 <div class="dropdown-menu">
                     <a href="/user/profile/<%= user.id %>" class="dropdown-item"><i class="fa fa-user"></i> Profile</a>
                     <a href="user/checkout" class="dropdown-item"><i class="fa fa-shopping-cart"></i> My cart</a>
+                    <% if(user.role == "staff") {%> <a href="/staff/dashboard" class="dropdown-item"><i class="fa fa-desktop" aria-hidden="true"></i> Dashboard</a> <%}%>
                     <a href="/user/order" class="dropdown-item"><i class="fa fa-sticky-note "></i> My order</a>
                     <div class="dropdown-divider"></div>
                     <a href="/auth/signout" class="dropdown-item "><i class="fa fa-sign-out"></i> Signout</a>
