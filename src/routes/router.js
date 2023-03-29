@@ -70,7 +70,7 @@ router.get('/menu', async (req, res) => {
         user = await User.findById(id);
 
         let { category, page, title } = req.query;
-        let filter = {}
+        let filter = {is_outofstock: false}
         if (!page) page = 1;
         if (category && category != "any") filter = { ...filter, category };
         if (title) filter = { ...filter, title: { $regex: new RegExp(`${title}`), $options: 'i' } };
