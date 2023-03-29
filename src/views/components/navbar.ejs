@@ -1,12 +1,12 @@
-<% if(1 == 1) { %>
+<% if(user == null) { %>
     <nav class="navbar navbar-expand-xl navbar-dark bg-danger">
-        <a href="#" class="navbar-brand"><i class="fa fa-cube"></i>Sui<b>Getsu</b></a>
+        <a href="/" class="navbar-brand"><i class="fa fa-cube"></i>Sui<b>Getsu</b></a>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse"
             aria-expanded="true">
             <span class="navbar-toggler-icon"></span>
         </button>
         <!-- Collection of nav links, forms, and other content for toggling -->
-        <div id="navbarCollapse" class="navbar-collapse justify-content-start collapse show" >
+        <div id="navbarCollapse" class="navbar-collapse justify-content-start collapse" >
             <div class="navbar-nav">
                 <a href="/" class="nav-item nav-link active">Home</a>
                 <a href="/menu" class="nav-item nav-link active">Menu</a>
@@ -21,13 +21,13 @@
 
 <% }else{ %>
 <nav class="navbar navbar-expand-xl navbar-dark bg-danger">
-    <a href="#" class="navbar-brand"><i class="fa fa-cube"></i>Sui<b>Getsu</b></a>
+    <a href="/" class="navbar-brand"><i class="fa fa-cube"></i>Sui<b>Getsu</b></a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse"
         aria-expanded="true">
         <span class="navbar-toggler-icon"></span>
     </button>
     <!-- Collection of nav links, forms, and other content for toggling -->
-    <div id="navbarCollapse" class="navbar-collapse justify-content-start collapse show" style="">
+    <div id="navbarCollapse" class="navbar-collapse justify-content-start collapse">
         <div class="navbar-nav">
             <a href="/" class="nav-item nav-link active">Home</a>
             <a href="/menu" class="nav-item nav-link active">Menu</a>
@@ -37,11 +37,11 @@
         <div class="navbar-nav ml-auto">
             <div class="nav-item dropdown">
                 <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle user-action"
-                    aria-expanded="false"><i></i> test_user@email.com <b class="caret"></b></a>
+                    aria-expanded="false"><i></i> <%= user.email %> <b class="caret"></b></a>
                 <div class="dropdown-menu">
-                    <a href="/user/id" class="dropdown-item"><i class="fa fa-user"></i> Profile</a>
+                    <a href="/user/<%= user.id %>/profile" class="dropdown-item"><i class="fa fa-user"></i> Profile</a>
                     <!-- <a href="" class="dropdown-item"><i class="fa fa-sliders"></i> Settings</a> -->
-                    <a href="/user/orders" class="dropdown-item"><i class="fa fa-sticky-note "></i> My order</a>
+                    <a href="/orders/user/<%= user.id %>" class="dropdown-item"><i class="fa fa-sticky-note "></i> My order</a>
                     <div class="dropdown-divider"></div>
                     <a href="/auth/signout" class="dropdown-item "><i class="fa fa-sign-out"></i> Signout</a>
                 </div>

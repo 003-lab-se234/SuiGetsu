@@ -10,6 +10,7 @@ jobs:
   tagging:
     name: tagging
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - 
         name: Checkout
@@ -27,15 +28,21 @@ jobs:
           major_pattern: "BREAKING CHANGE"
           minor_pattern: "feat"
           version_format: "${major}.${minor}.${patch}"
+      - name: Test
+        continue-on-error: true
+        run: | 
+          npm install
+          npm run test
       -
         name: Update version in package.json and add tag to git
+        continue-on-error: true
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           npm version v${{ steps.versioning.outputs.version }}
           git push --follow-tags 
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-app:
     needs: tagging

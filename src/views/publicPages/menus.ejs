@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Menu</title>
+    <%- include('../partials/header.ejs') %>
+        <style>
+            table img {
+                width: 100px;
+                height: 100px;
+            }
+
+            div a {
+                font-family: 'Heebo', sans-serif;
+                font-size: large;
+            }
+        </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <%- include('../components/navbar.ejs') %>
+
+        <div class="container-lg container-fluid  mt-5 px-5">
+
+            <h1 class="mb-3">Search for your meal</h1>
+            <div class="input-group mb-3">
+                <form class="form-inline my-2 my-lg-0" method="get">
+                    <input class="form-control form-control-sm mr-sm-2  w-50 w-sm-100" type="search"
+                        placeholder="food name" aria-label="Search" name="title" value="<%= title %>">
+                    <input type="hidden" name="page" value="1" />
+                    <input type="hidden" name="category" value="<%= category %>" />
+                    <button class="btn btn-outline-success my-2 my-sm-0 ml-2" type="submit">Search</button>
+                </form>
+            </div>
+
+            <nav class="d-none d-lg-block">
+                <div class="nav nav-tabs nav-responsive-lg ">
+                    <!-- check is anything selected -->
+                    <a class="nav-item nav-link" href="?category=any" role="tab" aria-controls="nav-home"
+                        aria-selected="true">Any</a>
+                    <a class="nav-item nav-link" href="?category=main" role="tab" aria-controls="nav-profile"
+                        aria-selected="false">Main</a>
+                    <a class="nav-item nav-link" href="?category=side" role="tab" aria-controls="nav-profile"
+                        aria-selected="false">Side</a>
+                    <a class="nav-item nav-link" href="?category=drink" role="tab" aria-controls="nav-contact"
+                        aria-selected="false">Drink</a>
+                    <a class="nav-item nav-link" href="?category=dessert" role="tab" aria-controls="nav-contact"
+                        aria-selected="false">Dessert</a>
+                    <a class="nav-item nav-link" href="?category=appetizer" role="tab" aria-controls="nav-contact"
+                        aria-selected="false">Appetizer</a>
+                </div>
+            </nav>
+
+            <div class="dropdown d-lg-none mb-5">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Category
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="nav-item nav-link" href="?category=any" role="tab" aria-controls="nav-home"
+                        aria-selected="true">Any</a>
+                    <a class="nav-item nav-link" href="?category=main" role="tab" aria-controls="nav-profile"
+                        aria-selected="false">Main</a>
+                    <a class="nav-item nav-link" href="?category=side" role="tab" aria-controls="nav-profile"
+                        aria-selected="false">Side</a>
+                    <a class="nav-item nav-link" href="?category=drink" role="tab" aria-controls="nav-contact"
+                        aria-selected="false">Drink</a>
+                    <a class="nav-item nav-link" href="?category=dessert" role="tab" aria-controls="nav-contact"
+                        aria-selected="false">Dessert</a>
+                    <a class="nav-item nav-link" href="?category=appetizer" role="tab" aria-controls="nav-contact"
+                        aria-selected="false">Appetizer</a>
+
+                </div>
+            </div>
+
+
+            <div class="container-fluid mb-3">
+                <% if(data.items.length==0) {%>
+                    <div class="container-fluid text-center">
+                        <img src="/public/404.png" width="300" height="300" class="img-fluid img-responsive" />
+                        <h3 class="p-3"><b>Oops!</b> Nothing here, Try again later</h3>
+                    </div>
+                    <%} else{%>
+                        <div class="container-fluid row">
+                            <% data.items.forEach( (item, index)=> {%>
+                                <div class="col-12 col-md-6 my-3">
+                                    <div class="row p-2 bg-white border rounded">
+                                        <div class="col-md-3 mt-1"><img
+                                                class="img-fluid img-responsive rounded product-image"
+                                                src="<%= item.image_path %>"></div>
+                                        <div class="col-md-6 mt-1">
+                                            <h5>
+                                                <%= item.title %>
+                                            </h5>
+                                            <h6 class="font-weight-light">category: <%=item.category%>
+                                            </h6>
+
+                                            <p class="text-justify text-truncate para mb-0">
+                                                <%= item.description %><br><br>
+                                            </p>
+                                        </div>
+                                        <div class="align-items-center align-content-center col-md-3 mt-1">
+                                            <div class="d-flex flex-row align-items-center">
+                                                <h4 class="mr-1">
+                                                    <%= item.price %> THB
+                                                </h4>
+                                            </div>
+
+                                            <div class="d-flex flex-column mt-4">
+                                                <button class="btn btn-primary btn-sm" type="button" data-toggle="modal"
+                                                    data-target="#exampleModal<%= item.id %>">
+                                                    Details
+                                                </button>
+                                                                        
+                                                <button class="btn btn-outline-primary btn-sm mt-2" id="addToCartBtn" type="button" onclick=" {
+                                                    const id = '<%=item.id%>';
+                                                    handleToCart(id)
+                                                }">
+                                                    Add to cart
+                                                </button>
+                                                <div class="modal fade" id="exampleModal<%= item.id %>" tabindex="-1"
+                                                    role="dialog" aria-labelledby="exampleModal<%= item.id %>"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h3 class="modal-title" id="exampleModal<%= item.id %>">
+                                                                    <%= item.title %>
+                                                                </h3>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="container-fluid text-center">
+                                                                    <img class="img-fluid" width="300" height="300"
+                                                                        src="<%= item.image_path %>">
+                                                                </div>
+                                                                <h4 class="mt-1">Description</h4>
+                                                                <h6 class="font-weight-light">category:
+                                                                    <%=item.category%>
+                                                                </h6>
+                                                                <p>
+                                                                    &emsp;<%= item.description %>
+                                                                </p>
+
+                                                                <div class="row">
+                                                                    <div class="align-items-center col-12 col-md-6">
+
+                                                                        <h6 class="d-block">Qty:</h6>
+                                                                        <button class="btn btn-link px-2" onclick="{
+                                                                            const count = this.parentNode.querySelector('#f-<%= item.id%>');
+                                                                            count.stepDown();
+                                                                            document.querySelector('#p-<%= item.id %>').innerHTML = (count.value * <%= item.price%>);
+                                                                            }">
+                                                                            -
+                                                                        </button>
+
+                                                                        <input id="f-<%= item.id%>" min="1"
+                                                                            name="quantity" value="1" type="number"
+                                                                            style="width: 40px;"
+                                                                            onchange="document.querySelector('#p-<%= item.id %>').innerHTML = (this.value * <%= item.price%>); " />
+
+                                                                        <button class="btn btn-link px-2" onclick="{
+                                                                            const count = this.parentNode.querySelector('#f-<%= item.id%>');
+                                                                            count.stepUp();
+                                                                            document.querySelector('#p-<%= item.id %>').innerHTML = (count.value * <%= item.price%>);
+                                                                            }">
+                                                                            +
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-12 col-md-6 align-items-left">
+                                                                        <p>Price: <span>
+                                                                                <%= item.price%>
+                                                                            </span> THB</p>
+                                                                        <p>Total Price: <span id="p-<%= item.id %>">
+                                                                                <%= item.price%>
+                                                                            </span> THB</p>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
+                                                                <a><button type="button" class="btn btn-success" id="addToCartBtn"
+                                                                        onclick=" {
+                                                                const id = '<%=item.id%>';
+                                                                handleToCart(id)
+                                                            }">Add to cart</button></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%})%>
+                        </div>
+                        <%}%>
+            </div>
+            <div class="float-right">
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        <% if(data.previousPage==null) {%>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-disabled="true">Previous</a>
+                            </li>
+                        <% }else{ %>
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?category=<%= category%>&page=<%= data.previousPage %>">Previous</a>
+                            </li>
+                        <% } %>
+                        <% if(data.previousPage !=null) {%>
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?category=<%= category%>&page=<%= data.previousPage %>">
+                                    <%= data.previousPage %>
+                                </a>
+                            </li>
+                        <%}%>
+                        <li class="page-item active" aria-current="page">
+                            <a class="page-link" href="#">
+                                <%= page%><span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+
+                        <% if(data.nextPage !=null) {%>
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?category=<%= category%>&page=<%= data.nextPage %>">
+                                    <%= data.nextPage %>
+                                </a>
+                            </li>
+                        <%}%>
+
+
+                        <% if(data.nextPage==null) {%>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-disabled="true">Next</a>
+                            </li>
+                        <% }else{ %>
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?category=<%= category%>&page=<%= data.nextPage %>">Next</a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <%- include('../partials/footer.ejs') %>
+            <script>
+                const handleToCart = (id) => {
+                    let user_id = '';
+                    <% if(user != null){%>
+                        user_id = '<%= user.id %>' ;
+                    <%}%>
+
+                    if(user_id == '') {
+                        alert("Please login first")
+                        window.location.href = '/auth/signin'
+                        return;
+                    }
+                    const qtyInput = document.querySelector(`#f-${id}`);
+                    // console.log(qty.value);
+                    
+                    const payload = { id, qty: qtyInput.value }
+                    const url = `/user/cart/${user_id}` ;
+                    const option = {
+                        method: "post",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(payload)
+                    }
+                    console.log(url , option)
+                    // fetch('/user/cart/')
+
+                    // location.reload();
+                }
+            </script>
+
+            <script defer>
+                const currentUrl = window.location.href;
+
+                const allATag = document.querySelectorAll('.nav-item');
+                allATag.forEach(e => {
+                    const selectedMenu = getQueryParams(currentUrl)['category'] || 'Any';
+                    if (e.innerHTML.toLowerCase() == selectedMenu.toLowerCase()) {
+                        e.classList.add('active');
+                    }
+                })
+
+                function getQueryParams(url) {
+                    const paramArr = url.slice(url.indexOf('?') + 1).split('&');
+                    const params = {};
+                    paramArr.map(param => {
+                        const [key, val] = param.split('=');
+                        params[key] = decodeURIComponent(val);
+                    })
+                    return params;
+                }
+
+            </script>
+</body>
+
+</html>

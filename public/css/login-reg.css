@@ -1,0 +1,63 @@
+section {
+    margin: auto;
+    margin-top: 10%;
+}
+
+.Header {
+    text-align: center;
+}
+
+.Logo {
+    width: 120px;
+    height: 150px;
+    margin-left: 115px;
+}
+
+.Background {
+    background-image: url('https://cdn.discordapp.com/attachments/1036644737303719997/1089948293209018438/vecteezy_wave-style-japanese-pattern-background_6999783.png');
+    background-size: auto;
+    background-repeat: no-repeat;
+}
+
+.InputBox {
+    border: solid 2px;
+    width: 280px;
+    height: 35px;
+    padding: 7px;
+    margin-top: 20px;
+    margin-left: 27px;
+    border-radius: 5px;
+}
+
+.Button {
+    padding: 10px;
+    width: 100px;
+    height: 45px;
+    background-color: #9f1215;
+    color: #fed381;
+    border: none;
+    margin-top: 25px;
+    margin-left: 125px;
+    font-size: 1.15em;
+    border-radius: 3px;
+}
+
+
+
+/* .Custom-border {
+    background-color:none;
+    border: 2px 2px 2px 2px;
+    border-color: #FFD381;
+    border-style: solid;
+    cursor: pointer;
+}
+
+.Custom-border a {
+    display: inline-block;
+} */
+
+/* .Nav-Color {
+    background-color: #9f1215;
+    color: #fed381;
+} */
+
