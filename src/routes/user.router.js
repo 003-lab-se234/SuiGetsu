@@ -110,10 +110,10 @@ userRouter.get('/remove/:id', (req, res) => {
 
 userRouter.get('/orders' , async(req,res) => {
     try{
-        const owner = req.session.userId ;
-    res.send('Show all orders')
-        // const orders = Order.find();
-        // res.send(orders);
+        const owner_id = req.session.userId ;
+        // res.send('Show all orders')
+        const orders = await Order.find({owner_id});
+        res.json(orders);
     }catch(err){
         logger.error(err);
         res.status(500);
@@ -121,8 +121,17 @@ userRouter.get('/orders' , async(req,res) => {
     }
 })
 
-userRouter.get('/order/:oId' , (req,res) => {
-    res.send('show 1 order')
+userRouter.get('/order/:orderId' , async(req,res) => {
+    try{
+        const orderId = req.params.orderId ;
+        const order = await Order.findById(orderId);
+        res.json(order);
+    }catch(err){
+        logger.error(err);
+        res.status(500);
+        return res.render('publicPages/error.ejs', { error: err })
+    }
+
 })
 
 
