@@ -31,6 +31,18 @@ orderController.get('/' , async(req,res) => {
     }
 })
 
+orderController.post('/update' , async(req,res) => {
+    try{
+        const {order_id , updatedStatus} = req.body ;
+        await Order.findByIdAndUpdate(order_id, {status: updatedStatus})
+        
+        res.redirect('/staff/order/')
+    }catch(err){
+        logger.error(err);
+        res.status(500);
+        return res.render('publicPages/error.ejs', { error: err })
+    }   
+})
 orderController.get('/update/:id' , async(req,res) => {
     try{
         const id = req.session.userId;

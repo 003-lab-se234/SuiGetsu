@@ -9,7 +9,7 @@
             color: red;
         }
         .cooking {
-            color: yellow;
+            color: rgb(255, 153, 0);
         }
         .delivering {
             color: blueviolet;
@@ -17,7 +17,6 @@
         .delivered {
             color: green;
         }
-
     </style>
 </head>
 
@@ -53,19 +52,40 @@
                     </div>
                 <%})%>
             </div>
-            <div class="col-12 col-lg-6 p-2" style="height: 750px;">
+            <div class="col-12 col-lg-6 p-2" style="height: 750px; overflow: scroll;">
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                       <a class="nav-item nav-link active" id="nav-summary-tab" data-toggle="tab" href="#nav-summary" role="tab" aria-controls="nav-summary" aria-selected="true">Summary</a>
-                      <a class="nav-item nav-link" id="nav-address-tab" data-toggle="tab" href="#nav-address" role="tab" aria-controls="nav-address" aria-selected="false">Place order</a>
+                      <a class="nav-item nav-link" id="nav-map-tab" data-toggle="tab" href="#nav-map" role="tab" aria-controls="nav-map" aria-selected="false">Map</a>
                     </div>
                     <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show" id="nav-map" role="tabpanel" aria-labelledby="nav-map-tab">
+                        <h3>Hi</h3>
+                        </div>
                         <div class="tab-pane fade show active" id="nav-summary" role="tabpanel" aria-labelledby="nav-summary-tab">
                             <div class="p-3">
+                                <h3>Update Status</h3>
+                                <!-- <div class="row my-3 p-2"> -->
+                                    <form class="my-3 p-2 form-row" method="post" action="/staff/order/update" enctype="application/json; charset=utf-8">
+                                        <input type="hidden" name="order_id" value="<%= order._id %>"/>
+                                        <select class="form-control col-5" id="updatedStatus" name="updatedStatus">
+                                            <option value="pending" <%if(order.status == 'pending') {%> selected<%}%> >Pending</option>
+                                            <option value="cooking" <%if(order.status == 'cooking') {%> selected<%}%>>Cooking</option>
+                                            <option value="delivery" <%if(order.status == 'delivery') {%> selected<%}%> >Delivery</option>
+                                            <option value="delivered" <%if(order.status == 'delivered') {%> selected<%}%> >Delivered</option>
+                                        </select>
+                                        <input type="submit" value="update" class="btn btn-primary col-4 mx-auto" />
+                                    </form>
+                                <!-- </div> -->
+                                <hr />
+
                                 <h3>Order detail</h3>
                                 <div class="row my-3 p-2">
                                     <div class="col-5">
                                         <p>Ordered by: <span class="text-capitalize"><%= order.firstname%></span> <span class="text-capitalize"><%= order.lastname%></span></p>
+                                    </div>
+                                    <div class="col-5">
+                                        <p>Tel: <span class="text-capitalize"><%= order.telephone%></span></p>
                                     </div>
                                     <div class="card col-12">
                                         <div class="card-body">
@@ -78,6 +98,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                <hr />
+
                                 <h3>Summary</h3>
                                 <div class="row my-3">
                                     <div class="col-5 text-left">
@@ -96,6 +118,8 @@
                                         </script>
                                     </div>
                                 </div>
+                                <hr />
+
                                 <h4>Note</h4>
                                 <div class="row my-3 ">
                                     <div class="col-10 p-2 border align-center mx-auto">

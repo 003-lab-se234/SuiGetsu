@@ -4,7 +4,20 @@
 <head>
     <title>Dashboard</title>
     <%- include('../partials/header.ejs') %>
-
+        <style>
+            .pending {
+                color: red;
+            }
+            .cooking {
+                color: rgb(255, 153, 0);
+            }
+            .delivery {
+                color: blueviolet;
+            }
+            .delivered {
+                color: green;
+            }
+        </style>
         <style>
             .dropbtn {
                 background-color: #04AA6D;
@@ -147,7 +160,6 @@
 
             <div class="table-responsive-lg">
                 <table class="table">
-                    <caption>List of order (Total: <% if(data.total != null) {%><%= data.total %><%} else{%>0<%}%>) </caption>
                     <thead>
                         <tr>
                             <th scope="col h3">
@@ -183,7 +195,7 @@
                                     <%= (Number(index) + 1) %>
                                 </td>
                                 <td class="text-capitalize">
-                                    <%= order.status %>
+                                    <span class="<%= order.status %>"><%= order.status %></span>
                                 </td>
                                 <td>
                                     <%= order.firstname %> <%= order.lastname %>
