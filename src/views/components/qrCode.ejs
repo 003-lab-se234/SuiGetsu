@@ -1,0 +1,14 @@
+<% if(qr_code !=null && order != null) {%>
+    <div class="d-block position-relative p-3 align-center m-auto" style="width: 512px;">
+        <div class="text-center">
+            <h2>Prompt Pay QR code</h2>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=<%= qr_code %>" width="256" height="256">
+        </div>
+
+        <div class="row text-left pl-5 pt-2 my-1">
+            <div class="col-8"><p>Pay to: <b>Kan Katpark</b></p></div>
+            <div class="col-8"><p>Amount: <b><%= order.total_price %></b> THB</p></div>
+        </div>
+
+    </div>
+<% } %>
