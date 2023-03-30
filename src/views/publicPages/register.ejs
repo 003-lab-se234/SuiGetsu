@@ -11,7 +11,7 @@
 </head>
 
 <body class="Background">
-    <div class="container-fluid " id="alertBlock">
+    <div class="container-fluid position-fixed" id="alertBlock" style="z-index: 1080;">
     </div>
 
     <div class="container">
@@ -168,7 +168,7 @@
                     // alert(fail.message)
 
                     const alert = alertCreation("danger", fail.message);
-                    console.log(alert)
+                    // console.log(alert)
                     // alert.classList.add('alert');
                     // alert.innerHTML = fail.message;
                     failBlock.appendChild(alert);

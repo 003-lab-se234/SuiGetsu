@@ -1,5 +1,4 @@
 const router = require('express').Router()
-const { default: axios } = require('axios');
 const config = require('../config/config');
 const authController = require('../controllers/auth.controller');
 const { log } = require('../middleware');

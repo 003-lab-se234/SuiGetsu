@@ -33,7 +33,7 @@ data-toggle="modal" data-target="#cartModal">
                                     
                                 </div>
                                 <div class="col-4">
-                                    <a href="/user/remove/<%= record.item._id %>" class="float-right"><i class="fa fa-trash" style="color: red;"></i></a>
+                                    <a href="/user/remove/<%= record.item._id %>?category=<%= category%>&page=<%= page%>" class="float-right"><i class="fa fa-trash" style="color: red;"></i></a>
                                     <img class="image" width="100" height="100" src="<%= record.item.image_path%>" alt="<%= record.item.title %>">
                                 </div>
                             </div>

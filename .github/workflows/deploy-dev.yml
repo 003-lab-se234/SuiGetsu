@@ -39,7 +39,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          npm version v${{ steps.versioning.outputs.version }}
+          npm version patch
           git push --follow-tags 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
