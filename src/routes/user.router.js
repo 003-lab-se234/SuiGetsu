@@ -106,10 +106,18 @@ userRouter.get('/remove/:id', (req, res) => {
 
 userRouter.get('/orders', async (req, res) => {
     try {
+        
         const owner_id = req.session.userId;
+        let filter = {owner_id}
+        let { status } = req.query;
+        // if (!page) page = 1;
+        if (status && status != "any") filter = { ...filter, status };
+        // if (title) filter = { ...filter, email:  };
         // res.send('Show all orders')
-        const orders = await Order.find({ owner_id }).populate('records.item');
-        res.json(orders);
+        const user = await User.findById(owner_id);
+        const orders = await Order.find(filter).populate('records.item');
+        res.render('userPages/orders.ejs', { user, data: orders })
+
     } catch (err) {
         logger.error(err);
         res.status(500);
