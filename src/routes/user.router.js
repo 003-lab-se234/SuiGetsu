@@ -4,6 +4,7 @@ const { Food } = require('../models/Food');
 const { Order } = require('../models/Order');
 const { User } = require('../models/User');
 const logger = require('../utilities/logger');
+const generatePayload = require('promptpay-qr')
 
 const userRouter = new express.Router();
 
@@ -115,11 +116,19 @@ userRouter.get('/orders' , async(req,res) => {
     }
 })
 
+
 userRouter.get('/order/:orderId' , async(req,res) => {
     try{
         const orderId = req.params.orderId ;
         const order = await Order.findById(orderId).populate('records.item');
-        res.json(order);
+
+        // check order category
+        // is pending generate QR code
+        const qr_code = generatePayload('0910677794', { amount: order.total_price } )
+        // res.send(qr_code)
+        console.log(qr_code)
+        res.render('components/qrCode' , {qr_code, order : order})
+        // res.json(order.total_price);
     }catch(err){
         logger.error(err);
         res.status(500);
