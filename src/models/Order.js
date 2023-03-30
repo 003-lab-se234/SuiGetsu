@@ -3,22 +3,23 @@ const mongoose = require("mongoose");
 const OrderSchema = new mongoose.Schema({
     owner_id: {
         type: mongoose.Schema.Types.ObjectId,
-        require: true
+        require: true,
+        ref: 'owner'
     },
     records: [{
         item: {
-            type: mongoose.Schema.Types.ObjectId ,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'food'
         },
         qty: Number
     }],
-        desitination: {
+    destination: {
         type: String,
-        require: true 
+        require: true
     },
     shipping_price: {
-        type: Number ,
-        default: 15 
+        type: Number,
+        default: 15
     },
     product_price: {
         type: Number,
@@ -33,8 +34,12 @@ const OrderSchema = new mongoose.Schema({
         enum: ['pending', 'cooking', 'delivery', 'delivered'],
         default: 'pending'
     },
-    note: String
-
+    note: String,
+    firstname: String,
+    lastname: String,
+    telephone: String
+}, {
+    timestamps: true
 })
 
 exports.Order = mongoose.model('order', OrderSchema);

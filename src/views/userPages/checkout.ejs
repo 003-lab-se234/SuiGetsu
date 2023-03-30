@@ -92,6 +92,21 @@
                                 <div class="my-3 px-2">
                                     <% if(cart.totalQty == 0){%><fieldset disabled><%}%>
                                         <form class="form-row form-control shadow-lg" action="/user/checkout" method="post" enctype="application/json; charset=utf-8">
+                                            <div class="form-group col-md-6">
+                                                <label for="firstname">Firstname</label>
+                                                <input type="text" class="form-control" id="firstname" name="firstname" placeholder="John" required>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label for="lastname">Lastname</label>
+                                                <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Smith" required>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label for="telephone number">Telephone number</label>
+                                                <input type="text" class="form-control" id="telephone" name="telephone" placeholder="telephone" required>
+
+                                            </div>
+                                            
                                             <div class="form-group col-md-12">
                                                 <label for="house number">House no.</label>
                                                 <input type="text" class="form-control" id="houseNumber" name="houseNumber" placeholder="House no." required>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dashboard</title>
+    <%- include('../partials/header.ejs') %>
+    <style>
+        .pending {
+            color: red;
+        }
+        .cooking {
+            color: yellow;
+        }
+        .delivering {
+            color: blueviolet;
+        }
+        .delivered {
+            color: green;
+        }
+
+    </style>
+</head>
+
+<body>
+    <%- include('../components/navbar.ejs') %>
+    <div class="container-fluid my-4">
+        <h1>Checkout</h1>
+
+        <div class="text-center h4">Status: <span class="text-capitalize <%= order.status %>"><%= order.status %></span></div>
+        <div class="row border shadow-lg rounded">
+            <div class="col-12 col-lg-6 p-2" style="height: 750px; overflow: scroll;">
+                <div class="text-center h4">Product list</div>
+                
+                
+                <% order.records.forEach( record => {%>
+                    <div class="row my-2 py-1 mx-2 border" >
+                        <div class="col-md-4 mt-1">
+                            <img src="<%= record.item.image_path%>" class="img-responsive img-fluid" >
+                        </div>
+                        <div class="col-md-8 mt-1 my-2 border border-secondary py-3">
+                            <span class="h5"><%= record.item.title %></span>
+                            <p>Category: <span class="text-capitalize "><%= record.item.category %></span></p>
+                            <p class="text-justify text-truncate para mb-5">
+                                <%= record.item.description %>
+                            </p>
+
+                            <div class="position-absolute w-75" style="bottom: 0;">
+                                <p class="float-left"> <%= record.item.price %> THB</p>
+                                <p class="float-right"> x <%= record.qty %></p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                <%})%>
+            </div>
+            <div class="col-12 col-lg-6 p-2" style="height: 750px;">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                      <a class="nav-item nav-link active" id="nav-summary-tab" data-toggle="tab" href="#nav-summary" role="tab" aria-controls="nav-summary" aria-selected="true">Summary</a>
+                      <a class="nav-item nav-link" id="nav-address-tab" data-toggle="tab" href="#nav-address" role="tab" aria-controls="nav-address" aria-selected="false">Place order</a>
+                    </div>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-summary" role="tabpanel" aria-labelledby="nav-summary-tab">
+                            <div class="p-3">
+                                <h3>Order detail</h3>
+                                <div class="row my-3 p-2">
+                                    <div class="col-5">
+                                        <p>Ordered by: <span class="text-capitalize"><%= order.firstname%></span> <span class="text-capitalize"><%= order.lastname%></span></p>
+                                    </div>
+                                    <div class="card col-12">
+                                        <div class="card-body">
+                                            <div class="card-title">
+                                                Destination
+                                            </div>
+                                            <p class="cart-text">
+                                                <%= order.destination %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h3>Summary</h3>
+                                <div class="row my-3">
+                                    <div class="col-5 text-left">
+                                        <span class="h5 d-block" style="color: gray;">Total:</span>
+                                        <span class="h5 d-block" style="color: gray;">Shipping:</span>
+                                        <span class="h5 d-block">Final Price:</span>
+
+                                    </div>
+                                    <div class="col-7 text-right">
+                                        <span class="h5 d-block" style="color: gray;"> <%= order.total_price %> THB</span>
+                                        <span class="h5 d-block" style="color: gray;"> <span id="shippingPrice"><%= order.shipping_price%></span> THB</span>
+                                        <span class="h5 d-block"> <span id="finalPrice">0</span> THB</span>
+                                        <script defer>
+                                            const finalPrice = document.querySelector('#finalPrice');
+                                            finalPrice.innerHTML = (Number(<%= order.total_price %>) + Number(document.querySelector('#shippingPrice').innerHTML))
+                                        </script>
+                                    </div>
+                                </div>
+                                <h4>Note</h4>
+                                <div class="row my-3 ">
+                                    <div class="col-10 p-2 border align-center mx-auto">
+                                        <p>&nbsp;&nbsp;&nbsp;&nbsp;<%= order.note%></p>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+
+</html>
