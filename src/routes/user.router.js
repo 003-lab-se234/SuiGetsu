@@ -87,13 +87,14 @@ userRouter.post('/cart', async (req, res) => {
 
 userRouter.get('/remove/:id', (req, res) => {
     try {
+        const {page, category} = req.query ;
         if (!req.session.cart) throw new Error("Invalid cart");
         const id = req.params.id;
         const cart = new Cart(req.session.cart);
         cart.remove(id);
         // cart.reloadCart();
         req.session.cart = cart;
-        return res.redirect('/menu');
+        return res.redirect(`/menu?category=${category}&page=${page}`);
     } catch (err) {
         logger.error(err);
         res.status(500);
