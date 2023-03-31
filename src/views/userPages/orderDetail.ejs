@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Order detail</title>
+    <%- include('../partials/header.ejs') %>
+    <link rel="style" href="/public/css/detail.css">
+    <style>
+        .pending {
+            color: white;
+        }
+        .cooking {
+            color: rgb(255, 153, 0);
+        }
+        .delivery {
+            color: blueviolet;
+        }
+        .delivered {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../components/navbar.ejs') %>
+
+   <div class="container d-block my-3 mx-auto">
+    <% if(order.status == "pending") {%>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+    <%}%>
+    <% if(order.status == "cooking") {%>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+    <%}%>
+    <% if(order.status == "delivering") {%>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 75%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+    <%}%>
+    <% if(order.status == "delivered") {%>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+    <%}%>
+   </div>
+    <div class="container-fluid row mt-4 mx-auto">
+        <div class ="col-12 col-lg-8 h-100" >
+            <div class="border bg-danger">
+                <p class="textBox m-2"><b>Order Status:</b> <span class="text-capitalize <%= order.status%>"><%= order.status%></span></p>
+            </div>
+            <% if(order.status != 'pending') {%>
+                <%- include('../components/map.ejs') %>
+            <%} else{%> 
+                <div class="row mt-2 p-2">
+
+                    <div class="col-12 col-lg-6 d-block">
+                        <h3>Prompt Pay QR code</h3>
+                        <%- include('../components/qrCode.ejs') %>
+                    </div>
+                    <div class="col-12 col-lg-6 d-block">
+                        <h3>Proof of payment</h3>
+                        <form class="form form-control p-2">
+                            <input type="file" class="form-control disabled my-2" disabled/>
+                            <input type="submit" class="btn btn-primary disabled my-2" disabled/>
+                        </form>
+                    </div>
+                </div>
+            <%}%>
+        </div>
+        <div class="col-12 col-lg-4 p-2" style="height: 500px; overflow: scroll;overflow-x: hidden;">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-summary-tab" data-toggle="tab"
+                        href="#nav-summary" role="tab" aria-controls="nav-summary"
+                        aria-selected="true">Summary</a>
+                    <a class="nav-item nav-link" id="nav-list-tab" data-toggle="tab" href="#nav-list" role="tab"
+                        aria-controls="nav-list" aria-selected="false">Product list</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab">
+                    <% order.records.forEach( record => {%>
+                        <div class="row my-2 py-1 mx-2 border" >
+                            <div class="col-md-4 mt-1">
+                                <img src="<%= record.item.image_path%>" class="img-responsive img-fluid" >
+                            </div>
+                            <div class="col-md-8 mt-1 my-2 py-3">
+                                <span class="h5"><%= record.item.title %></span>
+                                <p>Category: <span class="text-capitalize "><%= record.item.category %></span></p>
+                                <p class="text-justify text-truncate para mb-5">
+                                    <%= record.item.description %>
+                                </p>
+    
+                                <div class="position-absolute w-75" style="bottom: 0;">
+                                    <p class="float-left"> <%= record.item.price %> THB</p>
+                                    <p class="float-right"> x <%= record.qty %></p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    <%})%>
+                </div>
+                <div class="tab-pane fade show active" id="nav-summary" role="tabpanel"
+                    aria-labelledby="nav-summary-tab">
+                    <div class="p-3">
+                        <h3>Order detail</h3>
+                        <div class="row my-8 p-2">
+                            <div class="col-6">Receiver</div>
+                            <div class="col-6">Tel.</div>
+                            <div class="col-6">
+                                <b><span class="text-capitalize">
+                                        <%= order.firstname%>
+                                    </span> <span class="text-capitalize">
+                                        <%= order.lastname%>
+                                    </span>
+                                </b>
+                            </div>
+                            <div class="col-6">
+                                <b><span class="text-capitalize">
+                                        <%= order.telephone%>
+                                    </span>
+                                </b>
+                            </div>
+                            <div class="card col-12">
+                                <div class="card-body">
+                                    <div class="card-title">
+                                        Destination
+                                    </div>
+                                    <p class="cart-text">
+                                        <%= order.destination %>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
+                        <h3>Summary</h3>
+                        <div class="row my-3">
+                            <div class="col-5 text-left">
+                                <span class="h5 d-block" style="color: gray;">Total:</span>
+                                <span class="h5 d-block" style="color: gray;">Shipping:</span>
+                                <span class="h5 d-block">Final Price:</span>
+
+                            </div>
+                            <div class="col-7 text-right">
+                                <span class="h5 d-block" style="color: gray;">
+                                    <%= order.total_price %> THB
+                                </span>
+                                <span class="h5 d-block" style="color: gray;"> <span id="shippingPrice">
+                                        <%= order.shipping_price%>
+                                    </span> THB</span>
+                                <span class="h5 d-block"> <span id="finalPrice">0</span> THB</span>
+                                <script defer>
+                                    const finalPrice = document.querySelector('#finalPrice');
+                                    finalPrice.innerHTML = (Number(<%= order.total_price %>) + Number(document.querySelector('#shippingPrice').innerHTML))
+                                </script>
+                            </div>
+                        </div>
+                        <hr />
+
+                        <h4>Note</h4>
+                        <div class="row my-3 ">
+                            <div class="col-10 p-2 border align-center mx-auto">
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;<%= order.note%>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+    </div>    
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+
+</html>

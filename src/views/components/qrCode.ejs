@@ -1,0 +1,12 @@
+<% if(qr_code !=null && order != null) {%>
+    <div class="m-1 p-2 d-block">
+        <div class="text-left">
+            <img class="img" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=<%= qr_code %>" width="256" height="256">
+        </div>
+
+        <div class="row text-left ">
+            <div class="col-8"><p>Pay to: <b>Kan Katpark</b></p></div>
+            <div class="col-8"><p>Amount: <b><%= order.total_price %></b> THB</p></div>
+        </div>    
+    </div>
+<% } %>

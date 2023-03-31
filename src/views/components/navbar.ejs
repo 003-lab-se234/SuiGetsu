@@ -40,7 +40,7 @@
                     aria-expanded="false"><i></i> <%= user.email %> <b class="caret"></b></a>
                 <div class="dropdown-menu">
                     <a href="/user/profile/<%= user.id %>" class="dropdown-item"><i class="fa fa-user"></i> Profile</a>
-                    <a href="user/checkout" class="dropdown-item"><i class="fa fa-shopping-cart"></i> My cart</a>
+                    <a href="/user/checkout" class="dropdown-item"><i class="fa fa-shopping-cart"></i> My cart</a>
                     <% if(user.role == "staff") {%> <a href="/staff/dashboard" class="dropdown-item"><i class="fa fa-desktop" aria-hidden="true"></i> Dashboard</a> <%}%>
                     <a href="/user/orders/" class="dropdown-item"><i class="fa fa-sticky-note "></i> My order</a>
                     <div class="dropdown-divider"></div>

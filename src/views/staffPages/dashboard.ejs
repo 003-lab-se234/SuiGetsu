@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dashboard</title>
+    <%- include('../partials/header.ejs') %>
+</head>
+
+<body>
+    <%- include('../components/navbar.ejs') %>
+    <div class="row mx-auto mt-2">
+
+        <div class="col-4 col-lg-2 mx-auto" >
+            <a class="mx-auto btn-lg btn-primary my-3 d-block" href="/staff/food">
+                Manage Food
+            </a>
+            <a class="mx-auto btn-lg btn-success my-3 d-block" href="/staff/order">
+                Manage Order
+            </a>
+        </div>
+        <div class="col-12 col-lg-10 p-2 container-fluid" style="height: 750px;">
+            <h2>Summary</h2>
+            <iframe src="/public/html/mockDashboard.html" scrolling="no"  style="overflow: hidden;" class="w-100 h-100" ></iframe>
+        </div>
+
+    </div>
+
+
+    <%- include('../partials/footer.ejs') %>
+</body>
+
+</html>
