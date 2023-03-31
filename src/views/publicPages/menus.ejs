@@ -19,6 +19,7 @@
 
 <body class="d-flex flex-column min-vh-100">
     <%- include('../components/navbar.ejs') %>
+    <%- include('../components/alertBlock.ejs') %>
 
         <div class="container-lg container-fluid  mt-5 px-5">
             <h1 class="mb-3">Search for your meal</h1>
@@ -266,8 +267,9 @@
                     <%}%>
 
                     if (user_id == '') {
-                        alert("Please login first")
-                        window.location.href = '/auth/signin'
+                        // alert("Please login first")
+                        callAlert("warning" , "Please login first")
+                        // window.location.href = '/auth/signin'
                         return;
                     }
                     const qtyInput = document.querySelector(`#f-${id}`);
@@ -287,11 +289,12 @@
                         .then(response => response.json())
                         .then(res => { 
                             if(res.status == "success"){
-                                alert('Added')
+                                callAlert("success" , "Item has been added to cart");
                             }else{
-                                alert('Error' , res.message)
+                                // alert('Error' , res.message)
+                                callAlert('danger' , res.message);
                             }
-                            location.reload();
+                            setTimeout( () => {location.reload()}, 1000)
                         })
 
                 }
